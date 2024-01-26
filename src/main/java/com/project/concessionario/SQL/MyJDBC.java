@@ -55,7 +55,7 @@ public class MyJDBC {
                 case "Carburante" -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo` WHERE `unitàveicolo`.'carburante'="+scelta2+" ;");
                 case "Tipologia" -> {
                     switch (scelta2) {
-
+                        case "Noleggiabile"
                     }
                 }
             }
