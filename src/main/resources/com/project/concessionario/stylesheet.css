@@ -1,0 +1,57 @@
+
+.button {
+    -fx-background-radius: 50;
+    -fx-background-color: #333736;
+    -fx-text-fill: #ffffff;
+
+    -fx-padding: 6 15;
+
+    -fx-border-color: #333736;
+    -fx-border-width: 2;
+    -fx-border-radius: 50;
+}
+
+.menu {
+    -fx-background-color: #2a2d2d;
+}
+
+.anchor-pane {
+    -fx-background-color: #d8d0d4;
+}
+
+.tool-bar {
+    -fx-background-color: #2e3231;
+}
+
+.table-view{
+   -fx-background-color: transparent;
+}
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+}
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+.table-view .filler {
+    -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+
+.menuLabel: hover {
+    -fx-text-fill: #666767;
+}
+
+.button:hover
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: #333736;
+}
