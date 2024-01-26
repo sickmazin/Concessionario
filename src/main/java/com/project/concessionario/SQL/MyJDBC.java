@@ -2,12 +2,36 @@ package com.project.concessionario.SQL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MyJDBC {
+
+    public MyJDBC() {
+        connectToDataBase();
+        CARBURANTI= new ArrayList<>(List.of(new String[]{"Benzina", "Diesel", "GPL", "Elettrica", "Hybrid"}));
+        MODELLI= new ArrayList<>(modelliVeicolo());
+        MARCA= new ArrayList<>(marcheVeicolo());
+        TIPOLOGIA_VEICOLI= new ArrayList<>(List.of(new String[]{"Noleggiabile", "Nuova", "Usato", "Veicolo da riparare", "Altra Filiale"}));
+    }
+
+    public Collection<String> getCARBURANTI() {
+        return Collections.unmodifiableCollection(CARBURANTI);
+    }
+    public Collection<String> getTIPOLOGIA_VEICOLI() {
+        return Collections.unmodifiableCollection(TIPOLOGIA_VEICOLI);
+    }
+    public Collection<String> getMODELLI() {
+        return Collections.unmodifiableCollection(MODELLI);
+    }
+    public Collection<String> getMARCA() {
+        return Collections.unmodifiableCollection(MARCA);
+    }
+
     private static Statement statement;
-    private ArrayList<String> CARBURANTI= new ArrayList<>(List.of(new String[]{"Benzina", "Diesel", "GPL", "Elettrica", "Hybrid"}));
-    private ArrayList<String> MODELLI; //modelliVeicolo()
+    private ArrayList<String> CARBURANTI;
+    private ArrayList<String> TIPOLOGIA_VEICOLI;
+    private ArrayList<String> MODELLI;
     private ArrayList<String> MARCA;
     public void connectToDataBase(){
         Connection connection= null;
@@ -18,8 +42,6 @@ public class MyJDBC {
                     "mattia02"
             );
             statement = connection.createStatement();
-            MODELLI=modelliVeicolo();
-            MARCA=marcheVeicolo();
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -31,7 +53,11 @@ public class MyJDBC {
                 case "Marca" -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo` WHERE `unitàveicolo`.'Marca'="+scelta2+" ;");
                 case "Modello" -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo` WHERE `unitàveicolo`.'modello'="+scelta2+" ;");
                 case "Carburante" -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo` WHERE `unitàveicolo`.'carburante'="+scelta2+" ;");
-                //case "Tipologia" -> switch (scelta2){} todo
+                case "Tipologia" -> {
+                    switch (scelta2) {
+
+                    }
+                }
             }
             statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo`;");
         } catch (SQLException e) {
