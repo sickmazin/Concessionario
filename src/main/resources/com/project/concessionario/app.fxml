@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="598.0" prefWidth="1013.0" styleClass="anchor-pane" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.concessionario.HelloController">
+<AnchorPane prefHeight="605.0" prefWidth="1116.0" styleClass="anchor-pane" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.concessionario.HelloController">
     <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="949.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <left>
         </left>
@@ -46,17 +46,21 @@
                 <children>
                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="1000.0" spacing="15.0">
                         <children>
-                            <Label prefHeight="26.0" prefWidth="98.0" text="Inserisci veicolo" />
-                            <TextField fx:id="telaioTF" prefHeight="26.0" prefWidth="87.0" promptText="Telaio..." />
-                            <TextField fx:id="modelloTF" prefHeight="26.0" prefWidth="74.0" promptText="Modello..." />
-                            <ChoiceBox fx:id="posizioneCB" prefHeight="26.0" prefWidth="97.0" />
-                            <TextField fx:id="descrizioneTF" prefHeight="26.0" prefWidth="85.0" promptText="Descrizione..." />
-                            <ChoiceBox fx:id="carburanteCB" layoutX="331.0" layoutY="30.0" prefHeight="26.0" prefWidth="97.0" />
-                            <TextField fx:id="prezzoTF" prefHeight="26.0" prefWidth="98.0" promptText="Prezzo..." />
-                            <ChoiceBox fx:id="marcaCB" layoutX="485.0" layoutY="30.0" prefHeight="26.0" prefWidth="97.0" />
+                            <Label prefHeight="26.0" prefWidth="152.0" styleClass="paneLabel" text="Inserisci veicolo" />
+                            <TextField fx:id="telaioTF" prefHeight="26.0" prefWidth="117.0" promptText="Telaio..." />
+                     <ChoiceBox fx:id="modelloCB" layoutX="240.0" layoutY="47.0" prefHeight="26.0" prefWidth="110.0" />
+                            <ChoiceBox fx:id="posizioneCB" prefHeight="26.0" prefWidth="110.0" />
+                            <TextField fx:id="descrizioneTF" prefHeight="26.0" prefWidth="110.0" promptText="Descrizione..." />
+                            <ChoiceBox fx:id="carburanteCB" layoutX="331.0" layoutY="30.0" prefHeight="26.0" prefWidth="110.0" />
+                            <TextField fx:id="prezzoTF" prefHeight="26.0" prefWidth="110.0" promptText="Prezzo..." />
+                            <ChoiceBox fx:id="marcaCB" layoutX="485.0" layoutY="30.0" prefHeight="26.0" prefWidth="110.0" />
+                     <ChoiceBox fx:id="tipologiaCB" prefHeight="26.0" prefWidth="110.0" />
+                     <TextField fx:id="agg1" layoutX="482.0" layoutY="47.0" prefHeight="26.0" prefWidth="100.0" visible="false" />
+                     <TextField fx:id="agg2" layoutX="922.0" layoutY="47.0" prefHeight="26.0" prefWidth="100.0" visible="false" />
+                     <TextField fx:id="agg3" layoutX="928.0" layoutY="47.0" prefHeight="26.0" prefWidth="100.0" visible="false" />
                      <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
                         <children>
-                           <Button fx:id="inserisci" mnemonicParsing="false" prefHeight="34.0" prefWidth="90.0" text="Inserisci">
+                           <Button fx:id="inserisci" mnemonicParsing="false" onMouseClicked="#inserisci" prefHeight="34.0" prefWidth="96.0" text="Inserisci">
                               <HBox.margin>
                                  <Insets />
                               </HBox.margin>
@@ -70,17 +74,17 @@
                     </HBox>
                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                         <children>
-                            <Label prefHeight="26.0" prefWidth="98.0" text="Filtra per" />
+                            <Label prefHeight="26.0" prefWidth="102.0" styleClass="paneLabel" text="Filtra per" />
                             <ChoiceBox fx:id="sceltaFiltroCB" prefHeight="26.0" prefWidth="131.0" />
                             <ChoiceBox fx:id="possibilitaCB" prefHeight="26.0" prefWidth="131.0" />
-                            <Label prefHeight="26.0" prefWidth="98.0" text="Ordina per">
+                            <Label prefHeight="26.0" prefWidth="98.0" styleClass="paneLabel" text="Ordina per">
                         <HBox.margin>
                            <Insets left="130.0" />
                         </HBox.margin></Label>
                             <ChoiceBox fx:id="ordinaCB" prefHeight="26.0" prefWidth="130.0" />
                      <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="289.0" HBox.hgrow="ALWAYS">
                         <children>
-                           <Button fx:id="visualizza" mnemonicParsing="false" prefHeight="34.0" prefWidth="88.0" text="Visualizza">
+                           <Button fx:id="visualizza" mnemonicParsing="false" onMouseClicked="#visualizza" prefHeight="34.0" prefWidth="96.0" text="Visualizza">
                               <HBox.margin>
                                  <Insets />
                               </HBox.margin>
@@ -97,8 +101,8 @@
                             <Insets bottom="20.0" left="20.0" right="10.0" top="20.0" />
                         </padding>
                   <children>
-                     <Button fx:id="elimina" mnemonicParsing="false" prefHeight="34.0" prefWidth="94.0" text="Elimina" />
-                     <Button fx:id="modifica" mnemonicParsing="false" prefHeight="34.0" prefWidth="87.0" text="Modifica">
+                     <Button fx:id="elimina" mnemonicParsing="false" onMouseClicked="#elimina" prefHeight="34.0" prefWidth="96.0" text="Elimina" />
+                     <Button fx:id="modifica" mnemonicParsing="false" onMouseClicked="#modifica" prefHeight="34.0" prefWidth="96.0" text="Modifica">
                         <HBox.margin>
                            <Insets right="10.0" />
                         </HBox.margin>
@@ -132,16 +136,17 @@
     </BorderPane>
     <AnchorPane id="menu" fx:id="menu" layoutY="51.0" minWidth="-Infinity" prefHeight="547.0" prefWidth="134.0" styleClass="menu" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="50.0">
         <children>
-            <VBox layoutX="16.0" prefHeight="543.0" prefWidth="118.0" spacing="30.0" stylesheets="@stylesheet.css" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="-4.0">
+            <VBox layoutX="16.0" prefHeight="543.0" prefWidth="118.0" spacing="30.0" stylesheets="@stylesheet.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <children>
-                    <Label styleClass="menuLabel" text="Fornitori" />
-                    <Label styleClass="menuLabel" text="Ordini" />
-                    <Label styleClass="menuLabel" text="Veicoli" />
-                    <Label styleClass="menuLabel" text="Accessori" />
-                    <Label styleClass="menuLabel" text="Clienti" />
+                    <Label fx:id="fornitori" styleClass="menuLabel" text="Fornitori" />
+                    <Label fx:id="ordini" styleClass="menuLabel" text="Ordini" />
+                    <Label fx:id="veicoli" styleClass="menuLabel" text="Veicoli" />
+                    <Label fx:id="accessori" styleClass="menuLabel" text="Accessori" />
+                    <Label fx:id="clienti" styleClass="menuLabel" text="Clienti" />
+               <Label fx:id="appuntamenti" layoutX="40.0" layoutY="232.0" styleClass="menuLabel" text="Appuntamenti" />
                 </children>
                 <padding>
-                    <Insets bottom="10.0" left="30.0" right="10.0" top="30.0" />
+                    <Insets bottom="10.0" left="20.0" right="10.0" top="30.0" />
                 </padding>
             </VBox>
         </children>

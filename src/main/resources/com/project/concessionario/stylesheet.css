@@ -3,6 +3,7 @@
     -fx-background-radius: 50;
     -fx-background-color: #333736;
     -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
 
     -fx-padding: 6 15;
 
@@ -11,16 +12,14 @@
     -fx-border-radius: 50;
 }
 
-.text {
-    -fx-fill: #ffffff;
-}
-
 .menu {
     -fx-background-color: #2a2d2d;
 }
 
+.choice-box .context-menu { -fx-background-color: #d8d0d4; }
+
 .anchor-pane {
-    -fx-background-color: #d8d0d4;
+    -fx-background-color: #e3dbdf;
 }
 
 .tool-bar {
@@ -49,12 +48,16 @@
     -fx-background-color: #333736;
 }
 
-.label {
-    -fx-text-fill: #ffffff;
+.paneLabel {
+    -fx-text-fill: #2e3231;
     -fx-font-weight: bold;
 }
 
 
+.menuLabel {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
 .menuLabel: hover {
     -fx-text-fill: #666767;
 }
@@ -63,4 +66,34 @@
 {
     -fx-background-color: transparent;
     -fx-text-fill: #333736;
+}
+
+
+.dialog-pane{
+  -fx-background-color: #e3dbdf;
+  -fx-padding: 10px;
+  -fx-border-width:2.0px;
+ }
+
+/**Costumization of The Bar where the buttons are located**/
+.dialog-pane > .button-bar > .container {
+  -fx-background-color: #e3dbdf;
+}
+
+.dialog-pane > .content.label {
+   -fx-padding: 0.5em 0.5em 0.5em 0.5em;
+   -fx-text-fill: #000000;
+   -fx-font-weight: bold;
+   -fx-font-size: 15.0px;
+}
+
+/**Costumization of DialogPane Header**/
+.dialog-pane:header .header-panel {
+  -fx-background-color: #e3dbdf;
+}
+
+.dialog-pane:header .header-panel .label{
+  -fx-text-fill: #000000;
+  -fx-font-weight: bold;
+  -fx-font-size: 18.0px;
 }

@@ -29,8 +29,9 @@ public class MyJDBC extends DatabaseConnection {
     public Collection<String> getMARCA() {
         return Collections.unmodifiableCollection(MARCA);
     }
-
-    private static Statement statement;
+    public Collection<String> getPOSIZIONI() {
+        return Collections.unmodifiableCollection(POSIZIONI);
+    }
     private final ArrayList<String> POSIZIONI;
     private final ArrayList<String> CARBURANTI;
     private final ArrayList<String> TIPOLOGIA_VEICOLI;

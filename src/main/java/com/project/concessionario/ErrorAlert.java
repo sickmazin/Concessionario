@@ -18,7 +18,7 @@ public class ErrorAlert extends Alert {
         super(AlertType.ERROR, type.text, ButtonType.CLOSE);
         setTitle("Errore");
         DialogPane dialogPane = getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("login.css").toExternalForm());
+        dialogPane.getStylesheets().add(getClass().getResource("stylesheet.css").toExternalForm());
         dialogPane.setMinSize(500, 200);
     }
 

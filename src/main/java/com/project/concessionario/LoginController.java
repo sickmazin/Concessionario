@@ -71,6 +71,9 @@ public class LoginController {
                 stage.setTitle("Concessionario");
                 stage.setScene(scene);
                 stage.show();
+
+                ((HelloController) fxmlLoader.getController()).setTipo(testo.getText());
+
             } catch (IOException e) {
                 errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
                 errorAlert.show();
