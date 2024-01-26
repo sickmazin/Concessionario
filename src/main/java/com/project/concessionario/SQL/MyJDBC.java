@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MyJDBC {
+public class MyJDBC extends DatabaseConnection {
 
-    public MyJDBC() {
-        connectToDataBase();
+    public MyJDBC() throws SQLException {
+        super();
         CARBURANTI= new ArrayList<>(List.of(new String[]{"Benzina", "Diesel", "GPL", "Elettrica", "Hybrid"}));
         MODELLI= new ArrayList<>(modelliVeicolo());
         MARCA= new ArrayList<>(marcheVeicolo());
@@ -37,19 +37,6 @@ public class MyJDBC {
     private final ArrayList<String> STATO_RIPARAZIONE;
     private final ArrayList<String> MODELLI;
     private final ArrayList<String> MARCA;
-    public void connectToDataBase(){
-        Connection connection= null;
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/concessionario",
-                    "root",
-                    "mattia02"
-            );
-            statement = connection.createStatement();
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * Funziona utilizzata per ottenere i veicoli dal database.
