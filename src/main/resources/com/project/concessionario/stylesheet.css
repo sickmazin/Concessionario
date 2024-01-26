@@ -11,6 +11,10 @@
     -fx-border-radius: 50;
 }
 
+.text {
+    -fx-fill: #ffffff;
+}
+
 .menu {
     -fx-background-color: #2a2d2d;
 }
@@ -38,6 +42,11 @@
 }
 .table-view .filler {
     -fx-background-color: linear-gradient(#131313 0%, #424141 100%);
+}
+
+.vBox {
+    -fx-background-radius: 8;
+    -fx-background-color: #333736;
 }
 
 .label {
