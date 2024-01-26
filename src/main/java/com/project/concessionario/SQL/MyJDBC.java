@@ -13,6 +13,8 @@ public class MyJDBC {
         MODELLI= new ArrayList<>(modelliVeicolo());
         MARCA= new ArrayList<>(marcheVeicolo());
         TIPOLOGIA_VEICOLI= new ArrayList<>(List.of(new String[]{"Noleggiabile", "Nuova", "Usato", "Veicolo da riparare", "Altra Filiale"}));
+        POSIZIONI=new ArrayList<>(List.of(new String[]{"Salone", "Parcheggio"}));
+        STATO_RIPARAZIONE=new ArrayList<>(List.of(new String[]{"Da riparare", "In riparazione", "Riparata"}));
     }
 
     public Collection<String> getCARBURANTI() {
@@ -29,10 +31,12 @@ public class MyJDBC {
     }
 
     private static Statement statement;
-    private ArrayList<String> CARBURANTI;
-    private ArrayList<String> TIPOLOGIA_VEICOLI;
-    private ArrayList<String> MODELLI;
-    private ArrayList<String> MARCA;
+    private final ArrayList<String> POSIZIONI;
+    private final ArrayList<String> CARBURANTI;
+    private final ArrayList<String> TIPOLOGIA_VEICOLI;
+    private final ArrayList<String> STATO_RIPARAZIONE;
+    private final ArrayList<String> MODELLI;
+    private final ArrayList<String> MARCA;
     public void connectToDataBase(){
         Connection connection= null;
         try {
@@ -47,6 +51,11 @@ public class MyJDBC {
         }
     }
 
+    /**
+     * Funziona utilizzata per ottenere i veicoli dal database.
+     * @param scelta1 può assumere i seguenti valori: {"Marca","Modello", "Carburante","Tipologia" }, per un valore differente si ottengono tutti i veicoli.
+     * @param scelta2 invece viene utilizzato a seconda della scelta1, per la ricerca vera e propria nella query.
+     */
     public void getUnitaVeicolo(String scelta1, String scelta2){
         try {
             switch (scelta1){
@@ -55,41 +64,69 @@ public class MyJDBC {
                 case "Carburante" -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo` WHERE `unitàveicolo`.'carburante'="+scelta2+" ;");
                 case "Tipologia" -> {
                     switch (scelta2) {
-                        case "Noleggiabile"
+                        case "Noleggiabile" -> statement.executeQuery("SELECT * FROM `concessionario`.`veicolo_noleggiabile`;");
+                        case "Nuova" -> statement.executeQuery("SELECT * FROM `concessionario`.`veicolo_nuovo`;");
+                        case "Usato" -> statement.executeQuery("SELECT * FROM `concessionario`.`veicolo_usato`;");
+                        case "Veicolo da riparare" -> statement.executeQuery("SELECT * FROM `concessionario`.`veicolo_dariparare`;");
+                        case "Altra Filiale" -> statement.executeQuery("SELECT * FROM `concessionario`.`veicoloaltrafiliale`;");
                     }
                 }
+                default -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo`;");
             }
-            statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo`;");
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public void insertUnitaVeicolo(String[] query){
-        /*  query [0] -> NumeroTelaio
-            query [1] -> modello
-            query [2] -> posizione
-            query [3] -> descrizione
-            query [4] -> carburante
-            query [5] -> prezzo
-            query [6] -> Marca
-        * */
-        String numeroTelaio= query[0];
-        String modello= query[1];           //if (!MODELLI.contains(modello)) throw new IllegalArgumentException("Modello inserito non presente nella lista Veicoli");
-        String posizione=query [2];         if(!posizione.equals("Parcheggio") && !posizione.equals("Salone")) throw new IllegalArgumentException("Posizione errata");
-        String descrizione= query [3];      if (descrizione.isBlank()|| descrizione.isEmpty()) descrizione="NULL";
-        String carburante= query [4];       if(!CARBURANTI.contains(carburante)) throw new IllegalArgumentException("Carburante  non presente nella lista");
-        int prezzo;
-        try {
-            prezzo = Integer.parseInt(query[5]);
-        }catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Il prezzo passato non è un intero");
-        }
-        String marca=query [6]; //if (!MARCA.contains(marca)) throw new IllegalArgumentException("Marca inserita non presente nella lista Veicoli");
 
+
+    /**
+     * Permette di inserire l'unità veicolo che l'utente ha inserito nella gui, tramite le apposite parti. Esegue dei check sulle chiavi esterne, e sull' Enum prima di effettuare l'inserimento sul database.
+     * @param query un array che viene definito in questo modo:
+     *             query [0] -> NumeroTelaio,
+     *             query [1] -> modello,
+     *             query [2] -> posizione,
+     *             query [3] -> descrizione,
+     *             query [4] -> carburante,
+     *             query [5] -> prezzo,
+     *             query [6] -> Marca
+     * @param tipologia indica la tipologia di veicolo, utilizzato per inserire nell'apposita table.
+     * @param attrAggiuntivi array utilizzato per ottenere i valori degli attributi aggiuntivi delle tipologie USATO e DA RIPARARE
+     */
+    public void insertUnitaVeicolo(String[] query,String tipologia,ArrayList<String> attrAggiuntivi){
         try {
+            String numeroTelaio= query[0];
+            String modello= query[1];           if (!MODELLI.contains(modello)) throw new IllegalArgumentException("Modello inserito non presente nella lista Veicoli");
+            String posizione=query [2];         if(!POSIZIONI.contains(posizione)) throw new IllegalArgumentException("Posizione errata");
+            String descrizione= query [3];      if (descrizione.isBlank() || descrizione.isEmpty()) descrizione="NULL";
+            String carburante= query [4];       if(!CARBURANTI.contains(carburante)) throw new IllegalArgumentException("Carburante  non presente nella lista");
+            String marca=query [6];             if (!MARCA.contains(marca)) throw new IllegalArgumentException("Marca inserita non presente nella lista Veicoli");
+            int prezzo= Integer.parseInt(query[5]);
             statement.executeUpdate("INSERT INTO `concessionario`.`unitàveicolo` VALUES (  '" +numeroTelaio+"', '"+modello+"','"+posizione+"','" +descrizione+"','" +carburante+"', '"+prezzo+"', '"+marca+"');");
+            switch (tipologia) {
+                case "Noleggiabile" ->        statement.executeQuery("INSERT INTO `concessionario`.`veicolo_noleggiabile` VALUES ('" +numeroTelaio+"');");
+                case "Nuova" ->               statement.executeQuery("INSERT INTO `concessionario`.`veicolo_nuovo` VALUES ('" +numeroTelaio+"');");
+                case "Usato" -> {
+                    float chilometraggio;
+                    try{
+                        chilometraggio = Float.parseFloat(attrAggiuntivi.get(0));
+                    }catch (NumberFormatException e){
+                        throw new IllegalArgumentException("Valore del chilometraggio inserito sbagliato.");
+                    }
+                    statement.executeQuery("INSERT INTO `concessionario`.`veicolo_usato` VALUES ('" + numeroTelaio + "', '" + chilometraggio + "');");
+                }
+                case "Veicolo da riparare" -> {
+                    String descrizioneDanno=attrAggiuntivi.get(0);
+                    String dataSegnalazione=attrAggiuntivi.get(1); if (!dataSegnalazione.matches("\\d{4}-\\d{2}-\\d{2}")) throw new IllegalArgumentException("DATA ERRATA");
+                    String statoRiparazione=attrAggiuntivi.get(2); if (!STATO_RIPARAZIONE.contains(statoRiparazione)) throw new IllegalArgumentException("STATO RIPARAZIONE ERRATO");
+                    statement.executeQuery("INSERT INTO `concessionario`.`veicolo_usato` VALUES ('" + numeroTelaio + "', '" + descrizioneDanno + "', '" + dataSegnalazione + "', '" + statoRiparazione + "');");
+                }
+                case "Altra Filiale" ->       statement.executeQuery("INSERT INTO `concessionario`.`veicoloaltrafiliale` VALUES ('" +numeroTelaio+"');");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Il prezzo passato non è un intero");
         }
 
 
@@ -122,10 +159,10 @@ public class MyJDBC {
     }
 
     public static void main(String[] args) {
-        MyJDBC jdbc=new MyJDBC();
-        jdbc.connectToDataBase();
-        String[] arr= {"jdsab344as","Modello","Parcheggio","ciaoo","Benzina","54353","Mercedes"};
-        //jdbc.insertUnitaVeicolo(arr);
-        System.out.print(jdbc.marcheVeicolo());
+        //MyJDBC jdbc=new MyJDBC();
+        //jdbc.connectToDataBase();
+        //String[] arr= {"jdsab344as","Modello","Parcheggio","ciaoo","Benzina","54353","Mercedes"};
+        ////jdbc.insertUnitaVeicolo(arr);
+        //System.out.print(jdbc.marcheVeicolo());
     }
 }
