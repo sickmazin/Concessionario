@@ -42,15 +42,11 @@ public class VeicoloController implements Initializable {
     @FXML
     private TextField descrizioneTF;
     @FXML
-    private Button inserisci;
-    @FXML
     private ChoiceBox<String> marcaCB;
     @FXML
     private AnchorPane menu;
     @FXML
     private ChoiceBox<String> modelloCB;
-    @FXML
-    private ChoiceBox<String> ordinaCB;
     @FXML
     private ChoiceBox<String> posizioneCB;
     @FXML
@@ -215,8 +211,11 @@ public class VeicoloController implements Initializable {
 
             ArrayList<String> al = new ArrayList<>();
             al.add(((TextField) vBoxAgg1.getChildren().get(1)).getText());
-            al.add(((DatePicker) vBoxAgg2.getChildren().get(1)).getValue().toString());
-            al.add(((ChoiceBox<String>) vBoxAgg1.getChildren().get(1)).getValue());
+            DatePicker dp=((DatePicker) vBoxAgg2.getChildren().get(1));
+            if (dp.getValue() != null) {
+                al.add(dp.getValue().toString());
+            }
+            al.add(((ChoiceBox<String>) vBoxAgg3.getChildren().get(1)).getValue());
             database.insertUnitaVeicolo(nuovoVeicolo, tipologiaCB.getValue(), al);
 
         } catch(SQLException e) {
@@ -243,8 +242,12 @@ public class VeicoloController implements Initializable {
 
     @FXML
     private void modifica(MouseEvent event) {
-        UnitaVeicolo v = null;
-        // v = database.getStoCAZZO
+        ArrayList<UnitaVeicolo> al = getVeicoliSelezionati();
+        if (al.size()!=1) {
+            errorAlert = new ErrorAlert("Devi selezionare esattamente un elemento");
+            errorAlert.show();
+            return;
+        }
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("modifica.fxml"));
 
         Popup popup = new Popup();
@@ -252,12 +255,12 @@ public class VeicoloController implements Initializable {
             popup.getContent().add(fxmlLoader.load());
             ModificaController mc = fxmlLoader.getController();
             mc.setDatabase(database);
-            mc.setVeicolo(v);
+            mc.setVeicolo(al.get(0));
+            popup.show(tableView.getScene().getWindow());
         } catch (IOException e) {
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
             errorAlert.show();
         }
-        System.out.println("modifica");
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

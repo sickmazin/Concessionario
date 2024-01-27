@@ -7,99 +7,119 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="240.0" prefWidth="1000.0" styleClass="back" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.concessionario.ModificaController">
-    <children>
-      <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="1000.0" spacing="15.0">
-                  <children>
-                      <Label alignment="TOP_LEFT" prefHeight="26.0" prefWidth="152.0" styleClass="paneLabel" text="Modifica veicolo" HBox.hgrow="NEVER" />
-                  <VBox HBox.hgrow="ALWAYS">
+<AnchorPane style="-fx-background-color: #262525;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.concessionario.ModificaController">
+   <children>
+      <AnchorPane prefHeight="247.0" prefWidth="1720.0" style="-fx-background-color: #e3dbdf;" stylesheets="@stylesheet.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+          <children>
+            <VBox alignment="CENTER" layoutX="-30.0" prefHeight="252.0" prefWidth="1030.0" AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="1000.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                        <children>
+                            <Label alignment="TOP_LEFT" prefHeight="26.0" prefWidth="139.0" styleClass="paneLabel" text="Modifica veicolo" HBox.hgrow="NEVER" />
+                        <VBox alignment="CENTER" prefHeight="100.0" prefWidth="72.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="39.0" styleClass="paneLabel" text="Telaio" />
+                              <Text fx:id="telaioT" strokeType="OUTSIDE" strokeWidth="0.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="84.0" styleClass="paneLabel" text="Modello" />
+                              <Text fx:id="modelloT" strokeType="OUTSIDE" strokeWidth="0.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" styleClass="paneLabel" text="Posizione" />
+                                  <ChoiceBox fx:id="posizioneCB" prefHeight="26.0" prefWidth="110.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="102.0" styleClass="paneLabel" text="Carburante" />
+                              <Text fx:id="carburanteT" strokeType="OUTSIDE" strokeWidth="0.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" styleClass="paneLabel" text="Prezzo" />
+                                  <TextField fx:id="prezzoTF" prefHeight="26.0" prefWidth="110.0" promptText="Prezzo..." />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="84.0" styleClass="paneLabel" text="Marca" />
+                              <Text fx:id="marcaT" strokeType="OUTSIDE" strokeWidth="0.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="96.0" styleClass="paneLabel" text="Tipologia" />
+                              <Text fx:id="tipologiaT" strokeType="OUTSIDE" strokeWidth="0.0" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="paneLabel" text="Descrizione" />
+                              <TextArea fx:id="descrizioneTA" prefHeight="60.0" prefWidth="110.0" promptText="Descrizione..." VBox.vgrow="ALWAYS" />
+                           </children>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox fx:id="vBoxAgg1" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="paneLabel" text="Chilometri" />
+                                  <TextField prefHeight="26.0" prefWidth="111.0" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vBoxAgg2" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="148.0" styleClass="paneLabel" text="Data segnalazione" />
+                              <DatePicker fx:id="data" prefHeight="25.0" prefWidth="98.0" />
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vBoxAgg3" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="paneLabel" text="Stato riparazione" />
+                              <ChoiceBox fx:id="statoRipCB" prefHeight="25.0" prefWidth="142.0" />
+                           </children>
+                        </VBox>
+                            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="125.0" HBox.hgrow="SOMETIMES">
+                                <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#modifica" prefHeight="34.0" prefWidth="84.0" text="Modifica" />
+                                </children>
+                            </HBox>
+                        </children>
+                        <padding>
+                            <Insets left="15.0" right="15.0" />
+                        </padding>
+                    </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="NEVER">
                      <children>
-                        <Label styleClass="paneLabel" text="Telaio" />
-                        <Text fx:id="telaioT" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Button mnemonicParsing="false" onMouseClicked="#chiudi" prefHeight="34.0" prefWidth="84.0" text="Chiudi" />
                      </children>
-                  </VBox>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Modello" />
-                        <Text fx:id="modelloT" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </children>
-                  </VBox>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Posizione" />
-                            <ChoiceBox fx:id="posizioneCB" prefHeight="26.0" prefWidth="110.0" />
-                     </children>
-                  </VBox>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Carburante" />
-                        <Text fx:id="carburanteT" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </children>
-                  </VBox>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Prezzo" />
-                            <TextField fx:id="prezzoTF" prefHeight="26.0" prefWidth="110.0" promptText="Prezzo..." />
-                     </children>
-                  </VBox>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Marca" />
-                        <Text fx:id="marcaT" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </children>
-                  </VBox>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Tipologia" />
-                        <Text fx:id="tipologiaT" strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </children>
-                  </VBox>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Descrizione" />
-                        <TextArea fx:id="descrizioneTA" prefHeight="60.0" prefWidth="110.0" promptText="Descrizione..." />
-                     </children>
-                  </VBox>
-                  <VBox fx:id="vBoxAgg1" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Chilometraggio" />
-                            <TextField prefHeight="26.0" prefWidth="110.0" />
-                     </children>
-                  </VBox>
-                  <VBox fx:id="vBoxAgg2" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Data segnalazione" />
-                        <DatePicker />
-                     </children>
-                  </VBox>
-                  <VBox fx:id="vBoxAgg3" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="paneLabel" text="Stato riparazione" />
-                        <ChoiceBox fx:id="statoRipCB" prefWidth="150.0" />
-                     </children>
-                  </VBox>
-                      <HBox alignment="TOP_RIGHT" prefHeight="60.0" prefWidth="280.0" HBox.hgrow="SOMETIMES">
-                          <children>
-                              <Button mnemonicParsing="false" onMouseClicked="#modifica" prefHeight="34.0" prefWidth="96.0" text="Modifica">
-                                  <HBox.margin>
-                                      <Insets top="7.0" />
-                                  </HBox.margin>
-                              </Button>
-                          </children>
-                      </HBox>
-                  </children>
-                  <padding>
-                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                  </padding>
-              </HBox>
-         </children>
-      </VBox>
-    </children>
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+          </children>
+      </AnchorPane>
+   </children>
+   <effect>
+      <DropShadow blurType="GAUSSIAN" height="44.45" radius="37.845" spread="0.2" width="108.93">
+         <color>
+            <Color opacity="0.8778625726699829" />
+         </color>
+      </DropShadow>
+   </effect>
 </AnchorPane>

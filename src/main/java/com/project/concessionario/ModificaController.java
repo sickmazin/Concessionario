@@ -4,10 +4,12 @@ import com.project.concessionario.Prodotti.UnitaVeicolo;
 import com.project.concessionario.SQL.MyJDBC;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.robot.Robot;
 import javafx.scene.text.Text;
-
+import javafx.stage.Popup;
 import java.util.HashMap;
 
 public class ModificaController {
@@ -56,6 +58,7 @@ public class ModificaController {
         descrizioneTA.setText(veicolo.getDescrizione());
         prezzoTF.setText(veicolo.getPrezzo()+"");
 
+        if (veicolo.getTipologia()==null) return;
         switch(veicolo.getTipologia()) {
             case "Usato" -> {
                 vBoxAgg1.setVisible(true);
@@ -83,8 +86,21 @@ public class ModificaController {
         modifiche.put("Posizione", posizioneCB.getValue());
         modifiche.put("Descrizione", descrizioneTA.getText());
         modifiche.put("Prezzo", prezzoTF.getText());
-        modifiche.put("DataSegnalazione", data.getValue().toString());
+        if (data !=null)modifiche.put("DataSegnalazione", data.getValue().toString());
         modifiche.put("StatoRiparazione", statoRipCB.getValue());
         database.updateUnitaVeicolo(modifiche);
+    }
+
+
+    @FXML
+    void chiudi(MouseEvent event) {
+        try {
+            Robot r=new Robot();
+            r.keyPress(KeyCode.ESCAPE);
+            r.keyRelease(KeyCode.ESCAPE);
+        } catch(Exception e) {
+            ErrorAlert er=new ErrorAlert("errore");
+            er.show();
+        }
     }
 }
