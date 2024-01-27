@@ -287,6 +287,5 @@ public class VeicoloController implements Initializable {
         colonnaTelaio.setCellValueFactory(new PropertyValueFactory<>("numeroTelaio"));
         tableView.setItems(unitaVeicoloObservableList);
 
-
     }
 }
