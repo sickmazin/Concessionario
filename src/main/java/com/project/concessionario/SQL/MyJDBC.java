@@ -180,8 +180,19 @@ public class MyJDBC extends DatabaseConnection{
         return ret;
     }
 
-    public static void main(String[] args) throws SQLException {
-        MyJDBC jdbc=new MyJDBC();
-        System.out.println(jdbc.getUnitaVeicolo("",""));
+    public void updateUnitaVeicolo(ArrayList<String> attrDaModificare){
+        try {
+
+        }catch ()
+    }
+
+    public void deleteUnitaVeicolo(ArrayList<UnitaVeicolo> veicolos) {
+        try {
+            for (UnitaVeicolo v:veicolos){
+                statement.executeUpdate("DELETE FROM unitàveicolo WHERE NumeroTelaio='"+v.getNumeroTelaio()+"';");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

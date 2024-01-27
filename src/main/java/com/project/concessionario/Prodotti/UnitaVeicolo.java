@@ -12,6 +12,7 @@ public class UnitaVeicolo {
     private String marca;
     private CheckBox checkBox;
 
+    private String tipologia;
     public String getNumeroTelaio() {
         return numeroTelaio;
     }
@@ -82,7 +83,7 @@ public class UnitaVeicolo {
     private UnitaVeicolo() {
     }
     public static final class UnitaVeicoloBuilder {
-        private String numeroTelaio;        private String modello;        private String posizione;        private String descrizione;        private String carburante;        private int prezzo;        private String marca;        private String descrizioneDanno;        private  String dataSegnalazione;        private String statoRiparazione;        private  float chilometraggio;
+        private String numeroTelaio;     private String tipologia;   private String modello;        private String posizione;        private String descrizione;        private String carburante;        private int prezzo;        private String marca;        private String descrizioneDanno;        private  String dataSegnalazione;        private String statoRiparazione;        private  float chilometraggio;
         private UnitaVeicoloBuilder() {
         }
 
@@ -92,6 +93,10 @@ public class UnitaVeicolo {
 
         public UnitaVeicoloBuilder withNumeroTelaio(String numeroTelaio) {
             this.numeroTelaio = numeroTelaio;
+            return this;
+        }
+        public UnitaVeicoloBuilder withTipologia(String tipologia) {
+            this.tipologia = tipologia;
             return this;
         }
 
@@ -156,6 +161,7 @@ public class UnitaVeicolo {
             unitaVeicolo.chilometraggio=this.chilometraggio;
             unitaVeicolo.statoRiparazione=this.statoRiparazione;
             unitaVeicolo.checkBox=new CheckBox();
+            unitaVeicolo.tipologia=this.tipologia;
             return unitaVeicolo;
         }
     }

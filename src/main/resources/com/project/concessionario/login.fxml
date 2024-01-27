@@ -118,7 +118,7 @@
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </HBox>
-            <PasswordField fx:id="password" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="400.0" promptText="password..." />
+            <PasswordField fx:id="password" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#pressedEnterForLogin" prefHeight="26.0" prefWidth="400.0" promptText="password..." />
             <Button mnemonicParsing="false" onMouseClicked="#login" prefHeight="43.0" prefWidth="119.0" text="Login" />
          </children>
       </VBox>

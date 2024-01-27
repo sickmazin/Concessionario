@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -42,6 +44,10 @@ public class LoginController {
             errorAlert.show();
             return;
         }
+        loginDB();
+    }
+    private void loginDB(){
+        ErrorAlert errorAlert;
 
         MyJDBCLogin login = null;
 
@@ -78,6 +84,20 @@ public class LoginController {
         else {
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.WRONG_LOGIN);
             errorAlert.show();
+        }
+    }
+    @FXML
+    void pressedEnterForLogin(KeyEvent event) {
+        ErrorAlert errorAlert;
+
+
+        if (event.getCode().equals(KeyCode.ENTER)){
+            if (tipoCorrente == null || password.getText().equals("")) {
+                errorAlert = new ErrorAlert(ErrorAlert.TYPE.WRONG_LOGIN);
+                errorAlert.show();
+                return;
+            }
+            loginDB();
         }
     }
 

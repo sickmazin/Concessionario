@@ -168,6 +168,7 @@ public class VeicoloController implements Initializable {
 
     @FXML
     private void visualizza(MouseEvent event) {
+        unitaVeicoloObservableList.clear();
         if (sceltaFiltroCB.getValue()==null) unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
         else unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
         tableView.refresh();
@@ -182,12 +183,24 @@ public class VeicoloController implements Initializable {
                                                prezzoTF.getText(),
                                                marcaCB.getValue() };
         database.insertUnitaVeicolo(nuovoVeicolo, tipologiaCB.getValue(), new ArrayList<>());
-        System.out.println("inserisci");
+        visualizza(event);
     }
     @FXML
     private void elimina(MouseEvent event) {
-        System.out.println("elimina");
+        ArrayList<UnitaVeicolo> veicolos= getVeicoliSelezionati();
+        database.deleteUnitaVeicolo(veicolos);
+        tableView.refresh();
+        visualizza(event);
     }
+
+    private ArrayList<UnitaVeicolo> getVeicoliSelezionati() {
+        ArrayList<UnitaVeicolo> veicolos= new ArrayList<>();
+        for (UnitaVeicolo v: unitaVeicoloObservableList){
+            if(v.getCheckBox().isSelected()) veicolos.add(v);
+        }
+        return veicolos;
+    }
+
     @FXML
     private void modifica(MouseEvent event) {
         System.out.println("modifica");
@@ -273,6 +286,7 @@ public class VeicoloController implements Initializable {
         colonnaSelezione.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         colonnaTelaio.setCellValueFactory(new PropertyValueFactory<>("numeroTelaio"));
         tableView.setItems(unitaVeicoloObservableList);
+
 
     }
 }
