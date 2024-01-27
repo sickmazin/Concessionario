@@ -1,11 +1,16 @@
 package com.project.concessionario;
 
+import com.project.concessionario.SQL.MyJDBC;
+import com.project.concessionario.SQL.MyJDBCLogin;
 import com.project.concessionario.sidebarState.HideState;
 import com.project.concessionario.sidebarState.TransitionState;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,9 +18,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 
 public class HelloController {
+    @FXML
+    private TextField agg1;
+    @FXML
+    private TextField agg2;
+    @FXML
+    private TextField agg3;
     @FXML
     private ChoiceBox<String> carburanteCB;
     @FXML
@@ -27,7 +43,7 @@ public class HelloController {
     @FXML
     private AnchorPane menu;
     @FXML
-    private TextField modelloTF;
+    private ChoiceBox<String> modelloCB;
     @FXML
     private ChoiceBox<String> ordinaCB;
     @FXML
@@ -44,10 +60,28 @@ public class HelloController {
     private Button visualizza;
     @FXML
     private ImageView ham;
+    @FXML
+    private Label ordini;
+    @FXML
+    private Label fornitori;
+    @FXML
+    private Label clienti;
+    @FXML
+    private Label veicoli;
+    @FXML
+    private Label accessori;
+    @FXML
+    private Label appuntamenti;
+
+    @FXML
+    private ChoiceBox<String> tipologiaCB;
+
     private TransitionState ts;
-
-
-
+    private String tipo;
+    private MyJDBC database = null;
+    private ErrorAlert errorAlert;
+    private HashMap<String, ChoiceBox<String>> corrispondenze = new HashMap<>();
+    private ArrayList<String>  selezionati = new ArrayList<>();
 
     @FXML
     void cambiaIconaMenu(MouseEvent event) {
@@ -60,6 +94,85 @@ public class HelloController {
         ts=(TransitionState) ts.nextState();
         ts.show();
     }
+    public void setTipo(String tipo) {
+        switch (tipo) {
+            case "Admin" -> { }
+            case "Auto" -> gestioneAuto();
+            case "Vendita" -> gestioneVendite();
+            case "Noleggio" -> gestioneNoleggio();
+            case "Contabile" -> gestioneContabile();
+            case "Assistenza" -> gestioneAssistenza();
+            case "Magazziniere" -> gestioneMagazzino();
+            default -> {
+                throw new IllegalArgumentException("QUALCOSA NON VA");
+            }
+        }
+    }
+
+    private void gestioneMagazzino() {
+        clienti.setDisable(true);
+        fornitori.setDisable(true);
+        appuntamenti.setDisable(true);
+    }
+
+    private void gestioneAssistenza() {
+        fornitori.setDisable(true);
+        veicoli.setDisable(true);
+        accessori.setDisable(true);
+        ordini.setDisable(true);
+    }
+
+    private void gestioneContabile() {
+        fornitori.setDisable(true);
+        veicoli.setDisable(true);
+        accessori.setDisable(true);
+        clienti.setDisable(true);
+        appuntamenti.setDisable(true);
+    }
+
+    private void gestioneNoleggio() {
+        fornitori.setDisable(true);
+        accessori.setDisable(true);
+        ordini.setDisable(true);
+    }
+
+    private void gestioneVendite() {
+        fornitori.setDisable(true);
+        ordini.setDisable(true);
+    }
+
+    private void gestioneAuto() {
+        accessori.setDisable(true);
+        clienti.setDisable(true);
+        appuntamenti.setDisable(true);
+    }
+
+    @FXML
+    private void visualizza(MouseEvent event) {
+        database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue());
+        System.out.println("visualizza");
+    }
+    @FXML
+    private void inserisci(MouseEvent event) {
+        String[] nuovoVeicolo = new String[] { telaioTF.getText(),
+                                               modelloCB.getValue(),
+                                               posizioneCB.getValue(),
+                                               descrizioneTF.getText(),
+                                               carburanteCB.getValue(),
+                                               prezzoTF.getText(),
+                                               marcaCB.getValue() };
+        database.insertUnitaVeicolo(nuovoVeicolo, tipologiaCB.getValue(), new ArrayList<>());
+        System.out.println("inserisci");
+    }
+    @FXML
+    private void elimina(MouseEvent event) {
+        System.out.println("elimina");
+    }
+    @FXML
+    private void modifica(MouseEvent event) {
+        System.out.println("modifica");
+    }
+
 
     public void initialize() {
         ts=new HideState();
@@ -69,5 +182,65 @@ public class HelloController {
         ts.setTo(-134);
 
         ts.show();
+
+        corrispondenze.put("Marca", marcaCB);
+        corrispondenze.put("Modello", modelloCB);
+        corrispondenze.put("Carburante", carburanteCB);
+        corrispondenze.put("Tipologia", tipologiaCB);
+
+        ChangeListener<String> filtroChangeListener=new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
+                possibilitaCB.getItems().clear();
+                for (String item : corrispondenze.get(newS).getItems())
+                    possibilitaCB.getItems().add(item);
+            }
+        };
+        sceltaFiltroCB.getSelectionModel().selectedItemProperty().addListener(filtroChangeListener);
+
+        ChangeListener<String> tipologiaChangeListener=new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
+                switch (newS) {
+                    case "Usata" -> {
+                        agg1.setVisible(true); agg2.setVisible(false); agg3.setVisible(false);
+                    }
+                    case "Auto da riparare" -> {
+                        agg1.setVisible(true); agg2.setVisible(true); agg3.setVisible(true);
+                    }
+                    default -> {
+                        agg1.setVisible(false); agg2.setVisible(false); agg3.setVisible(false);
+                    }
+                }
+            }
+        };
+        tipologiaCB.getSelectionModel().selectedItemProperty().addListener(tipologiaChangeListener);
+
+        try {
+            database =  new MyJDBC();
+        } catch(SQLException e) {
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.SQL_EXCEPTION);
+            errorAlert.show();
+        }
+
+        if (database!=null) {
+            for (String carburante : database.getCARBURANTI()) carburanteCB.getItems().add(carburante);
+            for (String tipologia : database.getTIPOLOGIA_VEICOLI()) tipologiaCB.getItems().add(tipologia);
+            for (String posizione : database.getPOSIZIONI()) posizioneCB.getItems().add(posizione);
+            for (String marca : database.getMARCA()) marcaCB.getItems().add(marca);
+            for (String modello : database.getMODELLI()) modelloCB.getItems().add(modello);
+        }
+
+
+        sceltaFiltroCB.getItems().add("Marca");
+        sceltaFiltroCB.getItems().add("Modello");
+        sceltaFiltroCB.getItems().add("Carburante");
+        sceltaFiltroCB.getItems().add("Tipologia");
+
+        ordinaCB.getItems().add("Telaio");
+        ordinaCB.getItems().add("Marca");
+        ordinaCB.getItems().add("Modello");
+        ordinaCB.getItems().add("Prezzo");
+        ordinaCB.getItems().add("Tipologia");
     }
 }

@@ -1,0 +1,38 @@
+
+.text {
+    -fx-fill: #ffffff;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+}
+
+.vBox {
+    -fx-background-radius: 8;
+    -fx-background-color: #333736;
+}
+
+.title {
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333736;
+}
+
+.back {
+    -fx-background-color: #e3dbdf;
+}
+
+.button {
+    -fx-background-radius: 50;
+    -fx-background-color: #333736;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+
+    -fx-padding: 6 15;
+
+    -fx-border-color: #333736;
+    -fx-border-width: 2;
+    -fx-border-radius: 50;
+}
+
