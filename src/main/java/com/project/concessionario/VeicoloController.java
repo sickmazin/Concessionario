@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,8 +18,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,11 +32,11 @@ import java.util.ResourceBundle;
 
 public class VeicoloController implements Initializable {
     @FXML
-    private TextField agg1;
+    private VBox vBoxAgg1;
     @FXML
-    private TextField agg2;
+    private VBox vBoxAgg2;
     @FXML
-    private TextField agg3;
+    private VBox vBoxAgg3;
     @FXML
     private ChoiceBox<String> carburanteCB;
     @FXML
@@ -198,17 +202,27 @@ public class VeicoloController implements Initializable {
         }
         tableView.refresh();
     }
-
     @FXML
     private void inserisci(MouseEvent event) {
-        String[] nuovoVeicolo = new String[] { telaioTF.getText(),
-                                               modelloCB.getValue(),
-                                               posizioneCB.getValue(),
-                                               descrizioneTF.getText(),
-                                               carburanteCB.getValue(),
-                                               prezzoTF.getText(),
-                                               marcaCB.getValue() };
-        database.insertUnitaVeicolo(nuovoVeicolo, tipologiaCB.getValue(), new ArrayList<>());
+        try {
+            String[] nuovoVeicolo = new String[] { telaioTF.getText(),
+                    modelloCB.getValue(),
+                    posizioneCB.getValue(),
+                    descrizioneTF.getText(),
+                    carburanteCB.getValue(),
+                    prezzoTF.getText(),
+                    marcaCB.getValue() };
+
+            ArrayList<String> al = new ArrayList<>();
+            al.add(((TextField) vBoxAgg1.getChildren().get(1)).getText());
+            al.add(((DatePicker) vBoxAgg2.getChildren().get(1)).getValue().toString());
+            al.add(((ChoiceBox<String>) vBoxAgg1.getChildren().get(1)).getValue());
+            database.insertUnitaVeicolo(nuovoVeicolo, tipologiaCB.getValue(), al);
+
+        } catch(SQLException e) {
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.SQL_EXCEPTION);
+            errorAlert.show();
+        }
         visualizza(event);
     }
     @FXML
@@ -229,6 +243,20 @@ public class VeicoloController implements Initializable {
 
     @FXML
     private void modifica(MouseEvent event) {
+        UnitaVeicolo v = null;
+        // v = database.getStoCAZZO
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("modifica.fxml"));
+
+        Popup popup = new Popup();
+        try {
+            popup.getContent().add(fxmlLoader.load());
+            ModificaController mc = fxmlLoader.getController();
+            mc.setDatabase(database);
+            mc.setVeicolo(v);
+        } catch (IOException e) {
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
+            errorAlert.show();
+        }
         System.out.println("modifica");
     }
     @Override
@@ -261,14 +289,17 @@ public class VeicoloController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
                 switch (newS) {
+
                     case "Usato" -> {
-                        agg1.setVisible(true); agg2.setVisible(false); agg3.setVisible(false);
+                        vBoxAgg1.setVisible(true); vBoxAgg2.setVisible(false); vBoxAgg3.setVisible(false);
+                        ((Label) vBoxAgg1.getChildren().get(1)).setText("Chilometraggio");
                     }
                     case "Veicolo da riparare" -> {
-                        agg1.setVisible(true); agg2.setVisible(true); agg3.setVisible(true);
+                        vBoxAgg1.setVisible(true); vBoxAgg2.setVisible(true); vBoxAgg3.setVisible(true);
+                        ((Label) vBoxAgg1.getChildren().get(1)).setText("Descrizione danno");
                     }
                     default -> {
-                        agg1.setVisible(false); agg2.setVisible(false); agg3.setVisible(false);
+                        vBoxAgg1.setVisible(false); vBoxAgg2.setVisible(false); vBoxAgg3.setVisible(false);
                     }
                 }
             }
@@ -278,7 +309,6 @@ public class VeicoloController implements Initializable {
         try {
             database =  new MyJDBC();
         } catch(SQLException e) {
-            e.printStackTrace();
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.SQL_EXCEPTION);
             errorAlert.show();
         }
@@ -296,13 +326,6 @@ public class VeicoloController implements Initializable {
         sceltaFiltroCB.getItems().add("Modello");
         sceltaFiltroCB.getItems().add("Carburante");
         sceltaFiltroCB.getItems().add("Tipologia");
-
-        ordinaCB.getItems().add("Telaio");
-        ordinaCB.getItems().add("Marca");
-        ordinaCB.getItems().add("Modello");
-        ordinaCB.getItems().add("Prezzo");
-        ordinaCB.getItems().add("Tipologia");
-
 
         //TABLE
         colonnaDescrizione.setCellValueFactory(new PropertyValueFactory<>("descrizione"));

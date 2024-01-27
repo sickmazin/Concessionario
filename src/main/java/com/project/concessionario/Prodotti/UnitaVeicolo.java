@@ -60,6 +60,10 @@ public class UnitaVeicolo {
         return chilometraggio;
     }
 
+    public String getTipologia() {
+        return tipologia;
+    }
+
     @Override
     public String toString() {
         return "UnitaVeicolo{" +

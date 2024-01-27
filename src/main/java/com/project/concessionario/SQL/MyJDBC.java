@@ -112,40 +112,34 @@ public class MyJDBC extends DatabaseConnection{
      * @param tipologia indica la tipologia di veicolo, utilizzato per inserire nell'apposita table.
      * @param attrAggiuntivi array utilizzato per ottenere i valori degli attributi aggiuntivi delle tipologie USATO e DA RIPARARE
      */
-    public void insertUnitaVeicolo(String[] query,String tipologia,ArrayList<String> attrAggiuntivi){
-        try {
-            String numeroTelaio= query[0];
-            String modello= query[1];           if (!MODELLI.contains(modello))                                           throw new IllegalArgumentException("Modello inserito non presente nella lista Veicoli");
-            String posizione=query [2];         if(!POSIZIONI.contains(posizione))                                        throw new IllegalArgumentException("Posizione errata");
-            String descrizione= query [3];      if (descrizione.isBlank() || descrizione.isEmpty()) descrizione="NULL";
-            String carburante= query [4];       if(!CARBURANTI.contains(carburante))                                      throw new IllegalArgumentException("Carburante  non presente nella lista");
-            String marca=query [6];             if (!MARCA.contains(marca))                                               throw new IllegalArgumentException("Marca inserita non presente nella lista Veicoli");
-            int prezzo= Integer.parseInt(query[5]);
-            statement.executeUpdate("INSERT INTO `concessionario`.`unitàveicolo` VALUES (  '" +numeroTelaio+"', '"+modello+"','"+posizione+"','" +descrizione+"','" +carburante+"', '"+prezzo+"', '"+marca+"');");
-            switch (tipologia) {
-                case "Noleggiabile" ->        statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_noleggiabile` VALUES ('" +numeroTelaio+"');");
-                case "Nuova" ->               statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_nuovo` VALUES ('" +numeroTelaio+"');");
-                case "Usato" -> {
-                    float chilometraggio;
-                    try{
-                        chilometraggio = Float.parseFloat(attrAggiuntivi.get(0));
-                    }catch (NumberFormatException e){
-                        throw new IllegalArgumentException("Valore del chilometraggio inserito sbagliato.");
-                    }
-                    statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_usato` VALUES ('" + numeroTelaio + "', '" + chilometraggio + "');");
+    public void insertUnitaVeicolo(String[] query,String tipologia,ArrayList<String> attrAggiuntivi) throws SQLException, NumberFormatException {
+        String numeroTelaio= query[0];
+        String modello= query[1];           if (!MODELLI.contains(modello))                                           throw new IllegalArgumentException("Modello inserito non presente nella lista Veicoli");
+        String posizione=query [2];         if(!POSIZIONI.contains(posizione))                                        throw new IllegalArgumentException("Posizione errata");
+        String descrizione= query [3];      if (descrizione.isBlank() || descrizione.isEmpty()) descrizione="NULL";
+        String carburante= query [4];       if(!CARBURANTI.contains(carburante))                                      throw new IllegalArgumentException("Carburante  non presente nella lista");
+        String marca=query [6];             if (!MARCA.contains(marca))                                               throw new IllegalArgumentException("Marca inserita non presente nella lista Veicoli");
+        int prezzo= Integer.parseInt(query[5]);
+        statement.executeUpdate("INSERT INTO `concessionario`.`unitàveicolo` VALUES (  '" +numeroTelaio+"', '"+modello+"','"+posizione+"','" +descrizione+"','" +carburante+"', '"+prezzo+"', '"+marca+"');");
+        switch (tipologia) {
+            case "Noleggiabile" ->        statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_noleggiabile` VALUES ('" +numeroTelaio+"');");
+            case "Nuova" ->               statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_nuovo` VALUES ('" +numeroTelaio+"');");
+            case "Usato" -> {
+                float chilometraggio;
+                try{
+                    chilometraggio = Float.parseFloat(attrAggiuntivi.get(0));
+                }catch (NumberFormatException e){
+                    throw new IllegalArgumentException("Valore del chilometraggio inserito sbagliato.");
                 }
-                case "Veicolo da riparare" -> {
-                    String descrizioneDanno=attrAggiuntivi.get(0);
-                    String dataSegnalazione=attrAggiuntivi.get(1); if (!dataSegnalazione.matches("\\d{4}-\\d{2}-\\d{2}")) throw new IllegalArgumentException("DATA ERRATA");
-                    String statoRiparazione=attrAggiuntivi.get(2); if (!STATO_RIPARAZIONE.contains(statoRiparazione)) throw new IllegalArgumentException("STATO RIPARAZIONE ERRATO");
-                    statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_dariparare` VALUES ('" + numeroTelaio + "', '" + descrizioneDanno + "', '" + dataSegnalazione + "', '" + statoRiparazione + "');");
-                }
-                case "Altra Filiale" ->       statement.executeUpdate("INSERT INTO `concessionario`.`veicoloaltrafiliale` VALUES ('" +numeroTelaio+"');");
+                statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_usato` VALUES ('" + numeroTelaio + "', '" + chilometraggio + "');");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Il prezzo passato non è un intero");
+            case "Veicolo da riparare" -> {
+                String descrizioneDanno=attrAggiuntivi.get(0);
+                String dataSegnalazione=attrAggiuntivi.get(1); if (!dataSegnalazione.matches("\\d{4}-\\d{2}-\\d{2}")) throw new IllegalArgumentException("DATA ERRATA");
+                String statoRiparazione=attrAggiuntivi.get(2); if (!STATO_RIPARAZIONE.contains(statoRiparazione)) throw new IllegalArgumentException("STATO RIPARAZIONE ERRATO");
+                statement.executeUpdate("INSERT INTO `concessionario`.`veicolo_dariparare` VALUES ('" + numeroTelaio + "', '" + descrizioneDanno + "', '" + dataSegnalazione + "', '" + statoRiparazione + "');");
+            }
+            case "Altra Filiale" ->       statement.executeUpdate("INSERT INTO `concessionario`.`veicoloaltrafiliale` VALUES ('" +numeroTelaio+"');");
         }
     }
 
