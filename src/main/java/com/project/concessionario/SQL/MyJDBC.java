@@ -2,10 +2,7 @@ package com.project.concessionario.SQL;
 import com.project.concessionario.Prodotti.UnitaVeicolo;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class MyJDBC extends DatabaseConnection{
     public MyJDBC() throws SQLException {
@@ -180,10 +177,16 @@ public class MyJDBC extends DatabaseConnection{
         return ret;
     }
 
-    public void updateUnitaVeicolo(ArrayList<String> attrDaModificare){
+    public void updateUnitaVeicolo(HashMap<String, String> map){
         try {
-
-        }catch ()
+            statement.executeUpdate("UPDATE `concessionario`.`unitàveicolo` SET Posizione ="+map.get("Posizione")+" , Descrizione ="+map.get("Descrizione")+" , Prezzo ="+map.get("Prezzo")+" , WHERE NumeroTelaio ="+map.get("NumeroTelaio")+";");
+            switch (map.get("Tipologia")){
+                case "Veicolo da riparare" -> statement.executeUpdate("UPDATE veicolo_dariparare SET Descrizione_Danni ="+ map.get("Descrizione_Danni")+", DataSegnalazione = "+map.get("DataSegnalazione")+", StatoRiparazione = "+map.get("StatoRiparazione")+" WHERE Veicolo ="+ map.get("NumeroTelaio")+";");
+                case "Usato" -> statement.executeUpdate("UPDATE veicolo_usato SET  Chilometraggio ="+map.get("Chilometraggio")+" WHERE Veicolo ="+ map.get("NumeroTelaio")+";");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteUnitaVeicolo(ArrayList<UnitaVeicolo> veicolos) {
