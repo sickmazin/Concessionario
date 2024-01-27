@@ -1,6 +1,5 @@
 
 
 1) gestione refresh del db (maybe??)
-2) gestione del tipo di accesso  (maybe??)
-3) TITOLARE????
-4) manca l'ordinamento e i risultati dei metodi
+2) colonne a runtime per le figlie
+3) label e vbox a runtime    --doing

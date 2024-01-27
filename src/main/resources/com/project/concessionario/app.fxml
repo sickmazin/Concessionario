@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -95,12 +96,27 @@
                            <ChoiceBox fx:id="tipologiaCB" prefHeight="26.0" prefWidth="110.0" />
                         </children>
                      </VBox>
-                     <TextField fx:id="agg1" layoutX="482.0" layoutY="47.0" prefHeight="26.0" prefWidth="100.0" visible="false" />
-                     <TextField fx:id="agg2" layoutX="922.0" layoutY="47.0" prefHeight="26.0" prefWidth="100.0" visible="false" />
-                     <TextField fx:id="agg3" layoutX="928.0" layoutY="47.0" prefHeight="26.0" prefWidth="100.0" visible="false" />
+                     <VBox fx:id="vBoxAgg1" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label styleClass="paneLabel" stylesheets="@stylesheet.css" text="Chilometraggio" />
+                           <TextField prefHeight="26.0" prefWidth="100.0" visible="false" />
+                        </children>
+                     </VBox>
+                     <VBox fx:id="vBoxAgg2" visible="false" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label styleClass="paneLabel" stylesheets="@stylesheet.css" text="Data segnalazione" />
+                           <DatePicker />
+                        </children>
+                     </VBox>
+                     <VBox fx:id="vBoxAgg3" visible="false" HBox.hgrow="ALWAYS">
+                        <children>
+                           <Label styleClass="paneLabel" stylesheets="@stylesheet.css" text="Stato riparazione" />
+                           <ChoiceBox prefWidth="150.0" />
+                        </children>
+                     </VBox>
                      <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
                         <children>
-                           <Button fx:id="inserisci" mnemonicParsing="false" onMouseClicked="#inserisci" prefHeight="34.0" prefWidth="96.0" text="Inserisci">
+                           <Button mnemonicParsing="false" onMouseClicked="#inserisci" prefHeight="34.0" prefWidth="96.0" text="Inserisci">
                               <HBox.margin>
                                  <Insets />
                               </HBox.margin>
@@ -117,14 +133,9 @@
                             <Label prefHeight="26.0" prefWidth="102.0" styleClass="paneLabel" text="Filtra per" />
                             <ChoiceBox fx:id="sceltaFiltroCB" prefHeight="26.0" prefWidth="131.0" />
                             <ChoiceBox fx:id="possibilitaCB" prefHeight="26.0" prefWidth="131.0" />
-                            <Label prefHeight="26.0" prefWidth="98.0" styleClass="paneLabel" text="Ordina per">
-                        <HBox.margin>
-                           <Insets left="130.0" />
-                        </HBox.margin></Label>
-                            <ChoiceBox fx:id="ordinaCB" prefHeight="26.0" prefWidth="130.0" />
                      <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="289.0" HBox.hgrow="ALWAYS">
                         <children>
-                           <Button fx:id="visualizza" mnemonicParsing="false" onMouseClicked="#visualizza" prefHeight="34.0" prefWidth="96.0" text="Visualizza">
+                           <Button mnemonicParsing="false" onMouseClicked="#visualizza" prefHeight="34.0" prefWidth="96.0" text="Visualizza">
                               <HBox.margin>
                                  <Insets />
                               </HBox.margin>

@@ -8,7 +8,8 @@ public class ErrorAlert extends Alert {
     public enum TYPE {
         SQL_EXCEPTION("Errore nella connessione al database"),
         WRONG_LOGIN("Errore nel login:\npassword o ruolo errati"),
-        FXML_ERROR("Errore nel caricamento del'applicazione, riprovare");
+        FXML_ERROR("Errore nel caricamento del'applicazione, riprovare"),
+        NUMBER_FORMAT("Errore nella connessione al database: formato dei numeri errato");
         private String text;
         TYPE(String string) {
             text = string;
