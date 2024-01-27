@@ -186,10 +186,13 @@ public class VeicoloController implements Initializable {
     }
     @FXML
     private void elimina(MouseEvent event) {
+
         System.out.println("elimina");
     }
     @FXML
     private void modifica(MouseEvent event) {
+        //getSelezionati()
+
         System.out.println("modifica");
     }
     @Override
@@ -273,6 +276,5 @@ public class VeicoloController implements Initializable {
         colonnaSelezione.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         colonnaTelaio.setCellValueFactory(new PropertyValueFactory<>("numeroTelaio"));
         tableView.setItems(unitaVeicoloObservableList);
-
     }
 }
