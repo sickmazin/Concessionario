@@ -66,16 +66,16 @@ public class LoginController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("app.fxml"));
 
             try {
-                Scene scene = new Scene(fxmlLoader.load(), 700, 350);
+                Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
                 stage.setMaximized(true);
                 stage.setTitle("Concessionario");
                 stage.setScene(scene);
                 stage.show();
-
                 ((HelloController) fxmlLoader.getController()).setTipo(testo.getText());
 
             } catch (IOException e) {
                 errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
+                e.printStackTrace();
                 errorAlert.show();
             }
         }

@@ -17,11 +17,12 @@ public class MyJDBCLogin extends  DatabaseConnection {
         try {
             statement.executeQuery("SELECT * FROM `concessionario`.`login` WHERE password = '"+password+"' AND ID = '"+id+"';");
             resultSet = statement.getResultSet();
-            return resultSet.first();
+            return resultSet.next();
 
         } catch (SQLException e) {
             ErrorAlert errorAlert = new ErrorAlert(ErrorAlert.TYPE.SQL_EXCEPTION);
             errorAlert.show();
+            e.printStackTrace();
             return false;
         }
     }

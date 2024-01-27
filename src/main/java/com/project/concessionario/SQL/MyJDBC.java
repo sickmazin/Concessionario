@@ -7,9 +7,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MyJDBC {
-    public MyJDBC() {
-        connectToDataBase();
+public class MyJDBC extends DatabaseConnection{
+    public MyJDBC() throws SQLException {
+        super();
         CARBURANTI= new ArrayList<>(List.of(new String[]{"Benzina", "Diesel", "GPL", "Elettrica", "Hybrid"}));
         MODELLI= new ArrayList<>(modelliVeicolo());
         MARCA= new ArrayList<>(marcheVeicolo());
@@ -38,26 +38,12 @@ public class MyJDBC {
         return STATO_RIPARAZIONE;
     }
 
-
-    private Statement statement;
     private final ArrayList<String> POSIZIONI;
     private final ArrayList<String> CARBURANTI;
     private final ArrayList<String> TIPOLOGIA_VEICOLI;
     private final ArrayList<String> STATO_RIPARAZIONE;
     private final ArrayList<String> MODELLI;
     private final ArrayList<String> MARCA;
-    public void connectToDataBase(){
-        try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/concessionario",
-                    "root",
-                    "mattia02"
-            );
-            statement = connection.createStatement();
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Funziona utilizzata per ottenere i veicoli dal database.
@@ -170,10 +156,10 @@ public class MyJDBC {
     private ArrayList<String> marcheVeicolo() {
         ArrayList<String> ret= new ArrayList<>();
         try {
-            statement.executeQuery("SELECT `veicolo`.`Marca` FROM `concessionario`.`veicolo`;");
+            statement.executeQuery("SELECT nome FROM `concessionario`.`marca`;");
             ResultSet resultSet= statement.getResultSet();
             while (resultSet.next()){
-                ret.add(resultSet.getString("Marca"));
+                ret.add(resultSet.getString("nome"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -194,7 +180,7 @@ public class MyJDBC {
         return ret;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         MyJDBC jdbc=new MyJDBC();
         System.out.println(jdbc.getUnitaVeicolo("",""));
     }
