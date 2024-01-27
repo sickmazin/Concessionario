@@ -58,11 +58,11 @@ public class MyJDBC extends DatabaseConnection{
                 case "Carburante" -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo` WHERE Carburante='"+scelta2+"' ;");
                 case "Tipologia" -> {
                     switch (scelta2) {
-                        case "Noleggiabile" -> statement.executeQuery("SELECT * FROM veicolo_noleggiabile, unitàveicolo where veicolo_noleggiabile.Veicolo=unitàveicolo.NumeroTelaio;");
-                        case "Nuova" -> statement.executeQuery("SELECT * FROM veicolo_nuovo, unitàveicolo where veicolo_nuovo.Veicolo=unitàveicolo.NumeroTelaio;");
-                        case "Usato" -> statement.executeQuery("SELECT * FROM veicolo_usato, unitàveicolo where veicolo_usato.Veicolo=unitàveicolo.NumeroTelaio;");
+                        case "Noleggiabile" ->        statement.executeQuery("SELECT * FROM veicolo_noleggiabile, unitàveicolo where veicolo_noleggiabile.Veicolo=unitàveicolo.NumeroTelaio;");
+                        case "Nuova" ->               statement.executeQuery("SELECT * FROM veicolo_nuovo, unitàveicolo where veicolo_nuovo.Veicolo=unitàveicolo.NumeroTelaio;");
+                        case "Usato" ->               statement.executeQuery("SELECT * FROM veicolo_usato, unitàveicolo where veicolo_usato.Veicolo=unitàveicolo.NumeroTelaio;");
                         case "Veicolo da riparare" -> statement.executeQuery("SELECT * FROM veicolo_dariparare, unitàveicolo where veicolo_dariparare.Veicolo=unitàveicolo.NumeroTelaio;");
-                        case "Altra Filiale" -> statement.executeQuery("SELECT * FROM veicoloaltrafiliale, unitàveicolo where veicoloaltrafiliale.Veicolo=unitàveicolo.NumeroTelaio;");
+                        case "Altra Filiale" ->       statement.executeQuery("SELECT * FROM veicoloaltrafiliale, unitàveicolo where veicoloaltrafiliale.Veicolo=unitàveicolo.NumeroTelaio;");
                     }
                 }
                 default -> statement.executeQuery("SELECT * FROM `concessionario`.`unitàveicolo`;");
@@ -150,6 +150,66 @@ public class MyJDBC extends DatabaseConnection{
     }
 
 
+    public UnitaVeicolo getUnitaVeicoloDaModificare(UnitaVeicolo veicolo){
+        ResultSet resultSet;
+        try {
+            statement.executeQuery("SELECT * FROM veicolo_noleggiabile, unitàveicolo where veicolo_noleggiabile.Veicolo=unitàveicolo.NumeroTelaio AND unitàveicolo.NumeroTelaio="+veicolo.getNumeroTelaio()+";");
+            resultSet=statement.getResultSet();
+            if (resultSet.next()){
+                //VEICOLO NOLEGGIABILE
+                return veicolo;
+            }else {
+                statement.executeQuery("SELECT * FROM veicolo_nuovo, unitàveicolo where veicolo_nuovo.Veicolo=unitàveicolo.NumeroTelaio AND unitàveicolo.NumeroTelaio="+veicolo.getNumeroTelaio()+";");
+                resultSet=statement.getResultSet();
+                if (resultSet.next()){
+                    //VEICOLO NUOVO
+                    return veicolo;
+                }else {
+                    statement.executeQuery("SELECT * FROM veicolo_usato, unitàveicolo where veicolo_usato.Veicolo=unitàveicolo.NumeroTelaio AND unitàveicolo.NumeroTelaio="+veicolo.getNumeroTelaio()+";");
+                    resultSet=statement.getResultSet();
+                    if (resultSet.next()){
+                        //VEICOLO USATO
+                        UnitaVeicolo v_trovata = UnitaVeicolo.UnitaVeicoloBuilder.anUnitaVeicolo()
+                                .withNumeroTelaio(resultSet.getString("NumeroTelaio"))
+                                .withModello(resultSet.getString("Modello"))
+                                .withPosizione(resultSet.getString("Posizione"))
+                                .withDescrizione(resultSet.getString("Descrizione"))
+                                .withCarburante(resultSet.getString("Carburante"))
+                                .withPrezzo(resultSet.getInt("Prezzo"))
+                                .withMarca(resultSet.getString("Marca"))
+                                .withTipologia("Usato")
+                                .withChilometraggio(resultSet.getFloat("Chilometraggio"))
+                                .build();
+                    }else {
+                        statement.executeQuery("SELECT * FROM veicolo_dariparare, unitàveicolo where veicolo_dariparare.Veicolo=unitàveicolo.NumeroTelaio AND unitàveicolo.NumeroTelaio="+veicolo.getNumeroTelaio()+";");
+                        if (resultSet.next()){
+                            //VEICOLO DA RIPARARE
+                            UnitaVeicolo v_trovata = UnitaVeicolo.UnitaVeicoloBuilder.anUnitaVeicolo()
+                                    .withNumeroTelaio(resultSet.getString("NumeroTelaio"))
+                                    .withModello(resultSet.getString("Modello"))
+                                    .withPosizione(resultSet.getString("Posizione"))
+                                    .withDescrizione(resultSet.getString("Descrizione"))
+                                    .withCarburante(resultSet.getString("Carburante"))
+                                    .withPrezzo(resultSet.getInt("Prezzo"))
+                                    .withMarca(resultSet.getString("Marca"))
+                                    .withDataSegnalazione(resultSet.getDate("DataSegnalazione").toString())
+                                    .withDescrizioneDanno(resultSet.getString("Descrizione_Danni"))
+                                    .withTipologia("Veicolo da riparare")
+                                    .withStatoRiparazione(resultSet.getString("StatoRiparazione"))
+                                    .build();
+                        }else {
+                            statement.executeQuery("SELECT * FROM veicoloaltrafiliale, unitàveicolo where veicoloaltrafiliale.Veicolo=unitàveicolo.NumeroTelaio AND unitàveicolo.NumeroTelaio="+veicolo.getNumeroTelaio()+";");
+                            return veicolo;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return  null;
+    }
+
     private ArrayList<String> marcheVeicolo() {
         ArrayList<String> ret= new ArrayList<>();
         try {
@@ -176,19 +236,22 @@ public class MyJDBC extends DatabaseConnection{
         }
         return ret;
     }
-
     public void updateUnitaVeicolo(HashMap<String, String> map){
+        /*
+          KEY HASH MAP:
+        * Posizione, Descrizione, Prezzo, NumeroTelaio
+        * Chilometraggio, DescrizioneDanni, DataSegnalazione, StatoRiparazione
+        * */
         try {
             statement.executeUpdate("UPDATE `concessionario`.`unitàveicolo` SET Posizione ="+map.get("Posizione")+" , Descrizione ="+map.get("Descrizione")+" , Prezzo ="+map.get("Prezzo")+" , WHERE NumeroTelaio ="+map.get("NumeroTelaio")+";");
             switch (map.get("Tipologia")){
-                case "Veicolo da riparare" -> statement.executeUpdate("UPDATE veicolo_dariparare SET Descrizione_Danni ="+ map.get("Descrizione_Danni")+", DataSegnalazione = "+map.get("DataSegnalazione")+", StatoRiparazione = "+map.get("StatoRiparazione")+" WHERE Veicolo ="+ map.get("NumeroTelaio")+";");
+                case "Veicolo da riparare" -> statement.executeUpdate("UPDATE veicolo_dariparare SET Descrizione_Danni ="+ map.get("DescrizioneDanni")+", DataSegnalazione = "+map.get("DataSegnalazione")+", StatoRiparazione = "+map.get("StatoRiparazione")+" WHERE Veicolo ="+ map.get("NumeroTelaio")+";");
                 case "Usato" -> statement.executeUpdate("UPDATE veicolo_usato SET  Chilometraggio ="+map.get("Chilometraggio")+" WHERE Veicolo ="+ map.get("NumeroTelaio")+";");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
     public void deleteUnitaVeicolo(ArrayList<UnitaVeicolo> veicolos) {
         try {
             for (UnitaVeicolo v:veicolos){

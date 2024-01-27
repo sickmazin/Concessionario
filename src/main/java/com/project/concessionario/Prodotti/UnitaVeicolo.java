@@ -40,7 +40,6 @@ public class UnitaVeicolo {
     public String getMarca() {
         return marca;
     }
-
     public CheckBox getCheckBox() {
         return checkBox;
     }

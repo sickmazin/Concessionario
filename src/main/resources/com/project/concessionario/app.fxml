@@ -158,7 +158,11 @@
                             <TableColumn fx:id="colonnaCarburante" editable="false" minWidth="1.5999755859375" prefWidth="103.19992065429688" text="Carburante" />
                             <TableColumn fx:id="colonnaPrezzo" editable="false" prefWidth="84.80001831054688" text="Prezzo" />
                             <TableColumn fx:id="colonnaMarca" editable="false" prefWidth="90.4000244140625" text="Marca" />
-                     <TableColumn fx:id="colonnaSelezione" editable="false" prefWidth="75.0" text="Seleziona" />
+                     <TableColumn fx:id="colonnaChilometraggio" editable="false" prefWidth="75.0" text="Chilometraggio" visible="false" />
+                     <TableColumn fx:id="colonnaDescrizioneDanni" editable="false" prefWidth="75.0" text="Descrizione danni" visible="false" />
+                     <TableColumn fx:id="colonnaDataSegnalazione" editable="false" prefWidth="90.0" text="Data segnalazione" visible="false" />
+                     <TableColumn fx:id="colonnaStatoRiparazione" editable="false" prefWidth="90.0" text="Stato riparazione" visible="false" />
+                     <TableColumn fx:id="colonnaSelezione" editable="false" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Seleziona" />
                         </columns>
                         <VBox.margin>
                             <Insets left="20.0" right="20.0" />

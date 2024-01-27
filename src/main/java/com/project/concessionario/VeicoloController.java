@@ -79,6 +79,14 @@ public class VeicoloController implements Initializable {
     @FXML
     private TableColumn<UnitaVeicolo,String> colonnaCarburante;
     @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaDataSegnalazione;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaStatoRiparazione;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaDescrizioneDanni;
+    @FXML
+    private TableColumn<UnitaVeicolo,Float> colonnaChilometraggio;
+    @FXML
     private TableColumn<UnitaVeicolo,String> colonnaDescrizione;
     @FXML
     private TableColumn<UnitaVeicolo,String> colonnaMarca;
@@ -169,10 +177,28 @@ public class VeicoloController implements Initializable {
     @FXML
     private void visualizza(MouseEvent event) {
         unitaVeicoloObservableList.clear();
-        if (sceltaFiltroCB.getValue()==null) unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
-        else unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
+        colonnaDataSegnalazione.setVisible(false);
+        colonnaStatoRiparazione.setVisible(false);
+        colonnaDescrizioneDanni.setVisible(false);
+        colonnaChilometraggio.setVisible  (false);
+
+        if (sceltaFiltroCB.getValue()==null ||sceltaFiltroCB.getValue()=="Tutto") unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
+        else {
+            if (sceltaFiltroCB.getValue()=="Tipologia"){
+                if (possibilitaCB.getValue()=="Usato") {
+                    colonnaChilometraggio.setVisible(true);
+                    unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
+                }else if (possibilitaCB.getValue()=="Veicolo da riparare"){
+                    colonnaDataSegnalazione.setVisible(true);
+                    colonnaStatoRiparazione.setVisible(true);
+                    colonnaDescrizioneDanni.setVisible(true);
+                    unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
+                }else unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
+            }else unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
+        }
         tableView.refresh();
     }
+
     @FXML
     private void inserisci(MouseEvent event) {
         String[] nuovoVeicolo = new String[] { telaioTF.getText(),
@@ -219,6 +245,7 @@ public class VeicoloController implements Initializable {
         corrispondenze.put("Modello", modelloCB);
         corrispondenze.put("Carburante", carburanteCB);
         corrispondenze.put("Tipologia", tipologiaCB);
+        corrispondenze.put("Tutto", new ChoiceBox<>());
 
         ChangeListener<String> filtroChangeListener=new ChangeListener<String>() {
             @Override
@@ -234,10 +261,10 @@ public class VeicoloController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
                 switch (newS) {
-                    case "Usata" -> {
+                    case "Usato" -> {
                         agg1.setVisible(true); agg2.setVisible(false); agg3.setVisible(false);
                     }
-                    case "Auto da riparare" -> {
+                    case "Veicolo da riparare" -> {
                         agg1.setVisible(true); agg2.setVisible(true); agg3.setVisible(true);
                     }
                     default -> {
@@ -251,6 +278,7 @@ public class VeicoloController implements Initializable {
         try {
             database =  new MyJDBC();
         } catch(SQLException e) {
+            e.printStackTrace();
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.SQL_EXCEPTION);
             errorAlert.show();
         }
@@ -263,7 +291,7 @@ public class VeicoloController implements Initializable {
             for (String modello : database.getMODELLI()) modelloCB.getItems().add(modello);
         }
 
-
+        sceltaFiltroCB.getItems().add("Tutto");
         sceltaFiltroCB.getItems().add("Marca");
         sceltaFiltroCB.getItems().add("Modello");
         sceltaFiltroCB.getItems().add("Carburante");
@@ -285,6 +313,10 @@ public class VeicoloController implements Initializable {
         colonnaPrezzo.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
         colonnaSelezione.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         colonnaTelaio.setCellValueFactory(new PropertyValueFactory<>("numeroTelaio"));
+        colonnaChilometraggio.setCellValueFactory(new PropertyValueFactory<>("chilometraggio"));
+        colonnaDataSegnalazione.setCellValueFactory(new PropertyValueFactory<>("dataSegnalazione"));
+        colonnaStatoRiparazione.setCellValueFactory(new PropertyValueFactory<>("statoRiparazione"));
+        colonnaDescrizioneDanni.setCellValueFactory(new PropertyValueFactory<>("descrizioneDanno"));
         tableView.setItems(unitaVeicoloObservableList);
 
     }
