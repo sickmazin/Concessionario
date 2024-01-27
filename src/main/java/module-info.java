@@ -3,6 +3,7 @@ module com.project.concessionario {
     requires javafx.fxml;
     requires java.sql;
 
+    opens com.project.concessionario.Prodotti to javafx.base;
 
     opens com.project.concessionario to javafx.fxml;
     exports com.project.concessionario;

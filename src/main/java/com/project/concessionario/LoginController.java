@@ -4,14 +4,9 @@ package com.project.concessionario;
 import com.project.concessionario.SQL.MyJDBCLogin;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -63,7 +58,7 @@ public class LoginController {
         boolean utenteVerificato = login.verificaUtente(testo.getText(), password.getText());
         if (utenteVerificato) {
             Stage stage = (Stage) password.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("app.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("app.fxml"));
 
             try {
                 Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
@@ -71,7 +66,7 @@ public class LoginController {
                 stage.setTitle("Concessionario");
                 stage.setScene(scene);
                 stage.show();
-                ((HelloController) fxmlLoader.getController()).setTipo(testo.getText());
+                ((VeicoloController) fxmlLoader.getController()).setTipo(testo.getText());
 
             } catch (IOException e) {
                 errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);

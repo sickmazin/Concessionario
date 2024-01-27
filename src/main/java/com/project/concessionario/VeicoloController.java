@@ -1,31 +1,32 @@
 package com.project.concessionario;
 
+import com.project.concessionario.Prodotti.UnitaVeicolo;
 import com.project.concessionario.SQL.MyJDBC;
-import com.project.concessionario.SQL.MyJDBCLogin;
 import com.project.concessionario.sidebarState.HideState;
 import com.project.concessionario.sidebarState.TransitionState;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 
-public class HelloController {
+public class VeicoloController implements Initializable {
     @FXML
     private TextField agg1;
     @FXML
@@ -74,8 +75,26 @@ public class HelloController {
     private Label appuntamenti;
 
     @FXML
+    private TableView<UnitaVeicolo> tableView;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaCarburante;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaDescrizione;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaMarca;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaModello;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaPosizione;
+    @FXML
+    private TableColumn<UnitaVeicolo,Integer> colonnaPrezzo;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaSelezione;
+    @FXML
+    private TableColumn<UnitaVeicolo,String> colonnaTelaio;
+    @FXML
     private ChoiceBox<String> tipologiaCB;
-
+    private ObservableList<UnitaVeicolo> unitaVeicoloObservableList= FXCollections.observableArrayList();
     private TransitionState ts;
     private String tipo;
     private MyJDBC database = null;
@@ -149,8 +168,9 @@ public class HelloController {
 
     @FXML
     private void visualizza(MouseEvent event) {
-        database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue());
-        System.out.println("visualizza");
+        if (sceltaFiltroCB.getValue()==null) unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
+        else unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
+        tableView.refresh();
     }
     @FXML
     private void inserisci(MouseEvent event) {
@@ -172,9 +192,8 @@ public class HelloController {
     private void modifica(MouseEvent event) {
         System.out.println("modifica");
     }
-
-
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         ts=new HideState();
         ts.setNode(menu);
         ts.setTransition(new TranslateTransition(Duration.seconds(0.35),menu));
@@ -242,5 +261,18 @@ public class HelloController {
         ordinaCB.getItems().add("Modello");
         ordinaCB.getItems().add("Prezzo");
         ordinaCB.getItems().add("Tipologia");
+
+
+        //TABLE
+        colonnaDescrizione.setCellValueFactory(new PropertyValueFactory<>("descrizione"));
+        colonnaCarburante.setCellValueFactory(new PropertyValueFactory<>("carburante"));
+        colonnaMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
+        colonnaModello.setCellValueFactory(new PropertyValueFactory<>("modello"));
+        colonnaPosizione.setCellValueFactory(new PropertyValueFactory<>("posizione"));
+        colonnaPrezzo.setCellValueFactory(new PropertyValueFactory<>("prezzo"));
+        colonnaSelezione.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
+        colonnaTelaio.setCellValueFactory(new PropertyValueFactory<>("numeroTelaio"));
+        tableView.setItems(unitaVeicoloObservableList);
+
     }
 }

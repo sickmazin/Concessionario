@@ -1,7 +1,64 @@
 package com.project.concessionario.Prodotti;
 
+import javafx.scene.control.CheckBox;
+
 public class UnitaVeicolo {
-    String numeroTelaio;    String modello;    String posizione;    String descrizione;    String carburante;    int prezzo;  String marca;
+    private String numeroTelaio;
+    private String modello;
+    private String posizione;
+    private String descrizione;
+    private String carburante;
+    private int prezzo;
+    private String marca;
+    private CheckBox checkBox;
+
+    public String getNumeroTelaio() {
+        return numeroTelaio;
+    }
+
+    public String getModello() {
+        return modello;
+    }
+
+    public String getPosizione() {
+        return posizione;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public String getCarburante() {
+        return carburante;
+    }
+
+    public int getPrezzo() {
+        return prezzo;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public String getDescrizioneDanno() {
+        return descrizioneDanno;
+    }
+
+    public String getDataSegnalazione() {
+        return dataSegnalazione;
+    }
+
+    public String getStatoRiparazione() {
+        return statoRiparazione;
+    }
+
+    public float getChilometraggio() {
+        return chilometraggio;
+    }
 
     @Override
     public String toString() {
@@ -98,6 +155,7 @@ public class UnitaVeicolo {
             unitaVeicolo.carburante = this.carburante;
             unitaVeicolo.chilometraggio=this.chilometraggio;
             unitaVeicolo.statoRiparazione=this.statoRiparazione;
+            unitaVeicolo.checkBox=new CheckBox();
             return unitaVeicolo;
         }
     }
