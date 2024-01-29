@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -20,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -181,6 +183,10 @@ public class VeicoloController implements Initializable {
 
     @FXML
     private void visualizza(MouseEvent event) {
+        clickedVisualizza();
+    }
+
+    private void clickedVisualizza() {
         unitaVeicoloObservableList.clear();
         colonnaDataSegnalazione.setVisible(false);
         colonnaStatoRiparazione.setVisible(false);
@@ -203,6 +209,7 @@ public class VeicoloController implements Initializable {
         }
         tableView.refresh();
     }
+
     @FXML
     private void inserisci(MouseEvent event) {
         try {
@@ -260,7 +267,7 @@ public class VeicoloController implements Initializable {
             popup.getContent().add(fxmlLoader.load());
             ModificaController mc = fxmlLoader.getController();
             mc.setDatabase(database);
-            mc.setVeicolo(al.get(0));
+            mc.setVeicolo(database.getUnitaVeicoloDaModificare(al.get(0)));
             popup.show(tableView.getScene().getWindow());
         } catch (IOException e) {
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
@@ -350,6 +357,7 @@ public class VeicoloController implements Initializable {
         colonnaDescrizioneDanni.setCellValueFactory(new PropertyValueFactory<>("descrizioneDanno"));
         tableView.setItems(unitaVeicoloObservableList);
 
+        clickedVisualizza();
     }
 
     @FXML

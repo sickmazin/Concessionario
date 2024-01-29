@@ -76,19 +76,19 @@
                         </VBox>
                         <VBox fx:id="vBoxAgg1" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="paneLabel" text="Chilometri" />
+                              <Label alignment="CENTER" styleClass="paneLabel" text="Chilometri" />
                                   <TextField prefHeight="26.0" prefWidth="111.0" />
                            </children>
                         </VBox>
                         <VBox fx:id="vBoxAgg2" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="148.0" styleClass="paneLabel" text="Data segnalazione" />
+                              <Label alignment="CENTER" prefHeight="17.0" prefWidth="148.0" styleClass="paneLabel" text="Data segnalazione" />
                               <DatePicker fx:id="data" prefHeight="25.0" prefWidth="98.0" />
                            </children>
                         </VBox>
                         <VBox fx:id="vBoxAgg3" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label styleClass="paneLabel" text="Stato riparazione" />
+                              <Label alignment="CENTER" styleClass="paneLabel" text="Stato riparazione" />
                               <ChoiceBox fx:id="statoRipCB" prefHeight="25.0" prefWidth="142.0" />
                            </children>
                         </VBox>
