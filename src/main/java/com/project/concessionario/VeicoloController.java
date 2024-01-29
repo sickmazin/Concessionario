@@ -73,7 +73,8 @@ public class VeicoloController implements Initializable {
     private Label accessori;
     @FXML
     private Label appuntamenti;
-
+    @FXML
+    private Label dipendenti;
     @FXML
     private TableView<UnitaVeicolo> tableView;
     @FXML
@@ -123,16 +124,14 @@ public class VeicoloController implements Initializable {
     }
     public void setTipo(String tipo) {
         switch (tipo) {
-            case "Titolare" -> { }
+            case "Admin" -> { }
             case "Auto" -> gestioneAuto();
             case "Vendita" -> gestioneVendite();
             case "Noleggio" -> gestioneNoleggio();
             case "Contabile" -> gestioneContabile();
             case "Assistenza" -> gestioneAssistenza();
             case "Magazziniere" -> gestioneMagazzino();
-            default -> {
-                throw new IllegalArgumentException("QUALCOSA NON VA");
-            }
+            default -> { }
         }
     }
 
@@ -140,6 +139,7 @@ public class VeicoloController implements Initializable {
         clienti.setDisable(true);
         fornitori.setDisable(true);
         appuntamenti.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneAssistenza() {
@@ -147,6 +147,7 @@ public class VeicoloController implements Initializable {
         veicoli.setDisable(true);
         accessori.setDisable(true);
         ordini.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneContabile() {
@@ -155,23 +156,27 @@ public class VeicoloController implements Initializable {
         accessori.setDisable(true);
         clienti.setDisable(true);
         appuntamenti.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneNoleggio() {
         fornitori.setDisable(true);
         accessori.setDisable(true);
         ordini.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneVendite() {
         fornitori.setDisable(true);
         ordini.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneAuto() {
         accessori.setDisable(true);
         clienti.setDisable(true);
         appuntamenti.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     @FXML
@@ -278,7 +283,7 @@ public class VeicoloController implements Initializable {
         corrispondenze.put("Tipologia", tipologiaCB);
         corrispondenze.put("Tutto", new ChoiceBox<>());
 
-        ChangeListener<String> filtroChangeListener=new ChangeListener<String>() {
+        ChangeListener<String> filtroChangeListener=new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
                 possibilitaCB.getItems().clear();
@@ -288,18 +293,18 @@ public class VeicoloController implements Initializable {
         };
         sceltaFiltroCB.getSelectionModel().selectedItemProperty().addListener(filtroChangeListener);
 
-        ChangeListener<String> tipologiaChangeListener=new ChangeListener<String>() {
+        ChangeListener<String> tipologiaChangeListener=new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
                 switch (newS) {
 
                     case "Usato" -> {
                         vBoxAgg1.setVisible(true); vBoxAgg2.setVisible(false); vBoxAgg3.setVisible(false);
-                        ((Label) vBoxAgg1.getChildren().get(1)).setText("Chilometraggio");
+                        ((Label) vBoxAgg1.getChildren().get(0)).setText("Chilometraggio");
                     }
                     case "Veicolo da riparare" -> {
                         vBoxAgg1.setVisible(true); vBoxAgg2.setVisible(true); vBoxAgg3.setVisible(true);
-                        ((Label) vBoxAgg1.getChildren().get(1)).setText("Descrizione danno");
+                        ((Label) vBoxAgg1.getChildren().get(0)).setText("Descrizione danno");
                     }
                     default -> {
                         vBoxAgg1.setVisible(false); vBoxAgg2.setVisible(false); vBoxAgg3.setVisible(false);
@@ -345,5 +350,21 @@ public class VeicoloController implements Initializable {
         colonnaDescrizioneDanni.setCellValueFactory(new PropertyValueFactory<>("descrizioneDanno"));
         tableView.setItems(unitaVeicoloObservableList);
 
+    }
+
+    @FXML
+    void logOut(MouseEvent event) {
+        Stage stage = (Stage) dipendenti.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("login.fxml"));
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+            stage.setTitle("Concessionario");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
+            errorAlert.show();
+        }
     }
 }
