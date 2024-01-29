@@ -60,8 +60,6 @@ public class VeicoloController implements Initializable {
     @FXML
     private TextField telaioTF;
     @FXML
-    private Button visualizza;
-    @FXML
     private ImageView ham;
     @FXML
     private Label ordini;
@@ -107,11 +105,9 @@ public class VeicoloController implements Initializable {
     private ChoiceBox<String> tipologiaCB;
     private ObservableList<UnitaVeicolo> unitaVeicoloObservableList= FXCollections.observableArrayList();
     private TransitionState ts;
-    private String tipo;
     private MyJDBC database = null;
     private ErrorAlert errorAlert;
     private HashMap<String, ChoiceBox<String>> corrispondenze = new HashMap<>();
-    private ArrayList<String>  selezionati = new ArrayList<>();
 
     @FXML
     void cambiaIconaMenu(MouseEvent event) {
@@ -126,16 +122,13 @@ public class VeicoloController implements Initializable {
     }
     public void setTipo(String tipo) {
         switch (tipo) {
-            case "Admin" -> { }
             case "Auto" -> gestioneAuto();
             case "Vendita" -> gestioneVendite();
             case "Noleggio" -> gestioneNoleggio();
             case "Contabile" -> gestioneContabile();
             case "Assistenza" -> gestioneAssistenza();
             case "Magazziniere" -> gestioneMagazzino();
-            default -> {
-                throw new IllegalArgumentException("QUALCOSA NON VA");
-            }
+            default -> { }
         }
     }
 
@@ -191,13 +184,13 @@ public class VeicoloController implements Initializable {
         colonnaDescrizioneDanni.setVisible(false);
         colonnaChilometraggio.setVisible  (false);
 
-        if (sceltaFiltroCB.getValue()==null ||sceltaFiltroCB.getValue()=="Tutto") unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
+        if (sceltaFiltroCB.getValue()==null ||sceltaFiltroCB.getValue().equals("Tutto")) unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
         else {
-            if (sceltaFiltroCB.getValue()=="Tipologia"){
-                if (possibilitaCB.getValue()=="Usato") {
+            if (sceltaFiltroCB.getValue().equals("Tipologia")){
+                if (possibilitaCB.getValue().equals("Usato")) {
                     colonnaChilometraggio.setVisible(true);
                     unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
-                }else if (possibilitaCB.getValue()=="Veicolo da riparare"){
+                }else if (possibilitaCB.getValue().equals("Veicolo da riparare")){
                     colonnaDataSegnalazione.setVisible(true);
                     colonnaStatoRiparazione.setVisible(true);
                     colonnaDescrizioneDanni.setVisible(true);
@@ -287,7 +280,7 @@ public class VeicoloController implements Initializable {
         corrispondenze.put("Tipologia", tipologiaCB);
         corrispondenze.put("Tutto", new ChoiceBox<>());
 
-        ChangeListener<String> filtroChangeListener=new ChangeListener<String>() {
+        ChangeListener<String> filtroChangeListener=new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
                 possibilitaCB.getItems().clear();
@@ -297,7 +290,7 @@ public class VeicoloController implements Initializable {
         };
         sceltaFiltroCB.getSelectionModel().selectedItemProperty().addListener(filtroChangeListener);
 
-        ChangeListener<String> tipologiaChangeListener=new ChangeListener<String>() {
+        ChangeListener<String> tipologiaChangeListener=new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldS, String newS) {
                 switch (newS) {
