@@ -202,6 +202,16 @@
                     <Label fx:id="accessori" styleClass="menuLabel" text="Accessori" />
                     <Label fx:id="clienti" styleClass="menuLabel" text="Clienti" />
                <Label fx:id="appuntamenti" layoutX="40.0" layoutY="232.0" styleClass="menuLabel" text="Appuntamenti" />
+               <Label fx:id="dipendenti" styleClass="menuLabel" text="Dipendenti" />
+               <VBox alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
+                  <children>
+                     <Label fx:id="logOut" onMouseClicked="#logOut" styleClass="menuLabel" text="Log out">
+                        <VBox.margin>
+                           <Insets bottom="10.0" />
+                        </VBox.margin>
+                     </Label>
+                  </children>
+               </VBox>
                 </children>
                 <padding>
                     <Insets bottom="10.0" left="20.0" right="10.0" top="30.0" />

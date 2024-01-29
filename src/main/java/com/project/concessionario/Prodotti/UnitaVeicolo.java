@@ -12,6 +12,7 @@ public class UnitaVeicolo {
     private String marca;
     private CheckBox checkBox;
 
+
     private String tipologia;
     public String getNumeroTelaio() {
         return numeroTelaio;

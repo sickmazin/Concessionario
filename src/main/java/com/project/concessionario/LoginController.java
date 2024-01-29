@@ -68,7 +68,6 @@ public class LoginController {
 
             try {
                 Scene scene = new Scene(fxmlLoader.load(), 1920, 1080);
-                stage.setMaximized(true);
                 stage.setTitle("Concessionario");
                 stage.setScene(scene);
                 stage.show();
@@ -76,7 +75,6 @@ public class LoginController {
 
             } catch (IOException e) {
                 errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
-                e.printStackTrace();
                 errorAlert.show();
             }
         }

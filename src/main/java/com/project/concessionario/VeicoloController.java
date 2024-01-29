@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -20,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -73,7 +75,8 @@ public class VeicoloController implements Initializable {
     private Label accessori;
     @FXML
     private Label appuntamenti;
-
+    @FXML
+    private Label dipendenti;
     @FXML
     private TableView<UnitaVeicolo> tableView;
     @FXML
@@ -140,6 +143,7 @@ public class VeicoloController implements Initializable {
         clienti.setDisable(true);
         fornitori.setDisable(true);
         appuntamenti.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneAssistenza() {
@@ -147,6 +151,7 @@ public class VeicoloController implements Initializable {
         veicoli.setDisable(true);
         accessori.setDisable(true);
         ordini.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneContabile() {
@@ -155,23 +160,27 @@ public class VeicoloController implements Initializable {
         accessori.setDisable(true);
         clienti.setDisable(true);
         appuntamenti.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneNoleggio() {
         fornitori.setDisable(true);
         accessori.setDisable(true);
         ordini.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneVendite() {
         fornitori.setDisable(true);
         ordini.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     private void gestioneAuto() {
         accessori.setDisable(true);
         clienti.setDisable(true);
         appuntamenti.setDisable(true);
+        dipendenti.setDisable(true);
     }
 
     @FXML
@@ -295,11 +304,11 @@ public class VeicoloController implements Initializable {
 
                     case "Usato" -> {
                         vBoxAgg1.setVisible(true); vBoxAgg2.setVisible(false); vBoxAgg3.setVisible(false);
-                        ((Label) vBoxAgg1.getChildren().get(1)).setText("Chilometraggio");
+                        ((Label) vBoxAgg1.getChildren().get(0)).setText("Chilometraggio");
                     }
                     case "Veicolo da riparare" -> {
                         vBoxAgg1.setVisible(true); vBoxAgg2.setVisible(true); vBoxAgg3.setVisible(true);
-                        ((Label) vBoxAgg1.getChildren().get(1)).setText("Descrizione danno");
+                        ((Label) vBoxAgg1.getChildren().get(0)).setText("Descrizione danno");
                     }
                     default -> {
                         vBoxAgg1.setVisible(false); vBoxAgg2.setVisible(false); vBoxAgg3.setVisible(false);
@@ -345,5 +354,21 @@ public class VeicoloController implements Initializable {
         colonnaDescrizioneDanni.setCellValueFactory(new PropertyValueFactory<>("descrizioneDanno"));
         tableView.setItems(unitaVeicoloObservableList);
 
+    }
+
+    @FXML
+    void logOut(MouseEvent event) {
+        Stage stage = (Stage) dipendenti.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("login.fxml"));
+        try {
+            Scene scene = new Scene(fxmlLoader.load(), 1000, 700);
+            stage.setTitle("Concessionario");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
+            errorAlert.show();
+        }
     }
 }
