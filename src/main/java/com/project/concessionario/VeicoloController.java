@@ -123,7 +123,7 @@ public class VeicoloController implements Initializable {
     }
     public void setTipo(String tipo) {
         switch (tipo) {
-            case "Admin" -> { }
+            case "Titolare" -> { }
             case "Auto" -> gestioneAuto();
             case "Vendita" -> gestioneVendite();
             case "Noleggio" -> gestioneNoleggio();
@@ -182,13 +182,13 @@ public class VeicoloController implements Initializable {
         colonnaDescrizioneDanni.setVisible(false);
         colonnaChilometraggio.setVisible  (false);
 
-        if (sceltaFiltroCB.getValue()==null ||sceltaFiltroCB.getValue()=="Tutto") unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
+        if (sceltaFiltroCB.getValue()==null || sceltaFiltroCB.getValue().equals("Tutto")) unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
         else {
-            if (sceltaFiltroCB.getValue()=="Tipologia"){
-                if (possibilitaCB.getValue()=="Usato") {
+            if (sceltaFiltroCB.getValue().equals("Tipologia")){
+                if (possibilitaCB.getValue().equals("Usato")) {
                     colonnaChilometraggio.setVisible(true);
                     unitaVeicoloObservableList.addAll(database.getUnitaVeicolo(sceltaFiltroCB.getValue(), possibilitaCB.getValue()));
-                }else if (possibilitaCB.getValue()=="Veicolo da riparare"){
+                }else if (possibilitaCB.getValue().equals("Veicolo da riparare")){
                     colonnaDataSegnalazione.setVisible(true);
                     colonnaStatoRiparazione.setVisible(true);
                     colonnaDescrizioneDanni.setVisible(true);

@@ -99,16 +99,16 @@
                      <VBox fx:id="vBoxAgg1" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
                         <children>
                            <Label styleClass="paneLabel" stylesheets="@stylesheet.css" text="Chilometraggio" />
-                           <TextField prefHeight="26.0" prefWidth="100.0" visible="false" />
+                           <TextField prefHeight="26.0" prefWidth="100.0" />
                         </children>
                      </VBox>
-                     <VBox fx:id="vBoxAgg2" visible="false" HBox.hgrow="ALWAYS">
+                     <VBox fx:id="vBoxAgg2" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
                         <children>
                            <Label styleClass="paneLabel" stylesheets="@stylesheet.css" text="Data segnalazione" />
                            <DatePicker />
                         </children>
                      </VBox>
-                     <VBox fx:id="vBoxAgg3" visible="false" HBox.hgrow="ALWAYS">
+                     <VBox fx:id="vBoxAgg3" alignment="CENTER" visible="false" HBox.hgrow="ALWAYS">
                         <children>
                            <Label styleClass="paneLabel" stylesheets="@stylesheet.css" text="Stato riparazione" />
                            <ChoiceBox prefWidth="150.0" />

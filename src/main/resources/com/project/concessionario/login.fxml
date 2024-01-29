@@ -29,7 +29,7 @@
                               <Image url="@../../../icon/admin.png" />
                            </image>
                         </ImageView>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Admin" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Titolare" />
                      </children>
                      <padding>
                         <Insets bottom="11.0" left="11.0" right="11.0" top="11.0" />

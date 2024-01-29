@@ -81,14 +81,11 @@ public class MyJDBC extends DatabaseConnection{
                 switch (scelta2){
                     case "Usato" -> veicolo= builder.withChilometraggio(resultSet.getFloat("Chilometraggio"))
                                 .build();
-
                     case "Veicolo da riparare" -> veicolo= builder.withDataSegnalazione(resultSet.getDate("DataSegnalazione").toString())
                                 .withDescrizioneDanno(resultSet.getString("Descrizione_Danni"))
                                 .withStatoRiparazione(resultSet.getString("StatoRiparazione"))
                                 .build();
-
                     default -> veicolo = builder.build();
-
                 }
                 veicoli.add(veicolo);
             }
