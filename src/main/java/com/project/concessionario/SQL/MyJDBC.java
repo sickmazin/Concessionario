@@ -112,11 +112,11 @@ public class MyJDBC extends DatabaseConnection{
      * @param tipologia indica la tipologia di veicolo, utilizzato per inserire nell'apposita table.
      * @param attrAggiuntivi array utilizzato per ottenere i valori degli attributi aggiuntivi delle tipologie USATO e DA RIPARARE
      */
-    public void insertUnitaVeicolo(String[] query,String tipologia,ArrayList<String> attrAggiuntivi) throws SQLException, NumberFormatException {
+    public void insertUnitaVeicolo(String[] query,String tipologia,ArrayList<String> attrAggiuntivi) throws SQLException, IllegalArgumentException {
         String numeroTelaio= query[0];
         String modello= query[1];           if (!MODELLI.contains(modello))                                           throw new IllegalArgumentException("Modello inserito non presente nella lista Veicoli");
         String posizione=query [2];         if(!POSIZIONI.contains(posizione))                                        throw new IllegalArgumentException("Posizione errata");
-        String descrizione= query [3];      if (descrizione.isBlank() || descrizione.isEmpty()) descrizione="NULL";
+        String descrizione= query [3];      if (descrizione.isBlank()) descrizione="NULL";
         String carburante= query [4];       if(!CARBURANTI.contains(carburante))                                      throw new IllegalArgumentException("Carburante  non presente nella lista");
         String marca=query [6];             if (!MARCA.contains(marca))                                               throw new IllegalArgumentException("Marca inserita non presente nella lista Veicoli");
         int prezzo= Integer.parseInt(query[5]);

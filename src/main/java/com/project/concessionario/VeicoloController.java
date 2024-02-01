@@ -203,7 +203,8 @@ public class VeicoloController implements Initializable {
     @FXML
     private void inserisci(MouseEvent event) {
         try {
-            String[] nuovoVeicolo = new String[] { telaioTF.getText(),
+            String[] nuovoVeicolo = new String[] {
+                    telaioTF.getText(),
                     modelloCB.getValue(),
                     posizioneCB.getValue(),
                     descrizioneTF.getText(),
@@ -214,14 +215,19 @@ public class VeicoloController implements Initializable {
             ArrayList<String> al = new ArrayList<>();
             al.add(((TextField) vBoxAgg1.getChildren().get(1)).getText());
             DatePicker dp=((DatePicker) vBoxAgg2.getChildren().get(1));
+
             if (dp.getValue() != null) {
                 al.add(dp.getValue().toString());
             }
+
             al.add(((ChoiceBox<String>) vBoxAgg3.getChildren().get(1)).getValue());
             database.insertUnitaVeicolo(nuovoVeicolo, tipologiaCB.getValue(), al);
 
         } catch(SQLException e) {
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.SQL_EXCEPTION);
+            errorAlert.show();
+        } catch(IllegalArgumentException e) {
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.ILLEGAL_ARGS);
             errorAlert.show();
         }
         visualizza(event);

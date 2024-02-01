@@ -86,7 +86,7 @@ public class ModificaController {
         modifiche.put("Posizione", posizioneCB.getValue());
         modifiche.put("Descrizione", descrizioneTA.getText());
         modifiche.put("Prezzo", prezzoTF.getText());
-        if (data !=null)modifiche.put("DataSegnalazione", data.getValue().toString());
+        if (data !=null) modifiche.put("DataSegnalazione", data.getValue().toString());
         modifiche.put("StatoRiparazione", statoRipCB.getValue());
         database.updateUnitaVeicolo(modifiche);
     }
