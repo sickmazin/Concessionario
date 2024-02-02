@@ -8,9 +8,10 @@ public class ErrorAlert extends Alert {
     public enum TYPE {
         SQL_EXCEPTION("Errore nella connessione al database"),
         WRONG_LOGIN("Errore nel login:\npassword o ruolo errati"),
+        FOREIGN_KEY("Errore nella selezione Modello-Marca: associazione di modello e marca errata."),
         FXML_ERROR("Errore nel caricamento del'applicazione, riprovare"),
-        NUMBER_FORMAT("Errore nella connessione al database: formato dei numeri errato"),
-        ILLEGAL_ARGS("Errore nell'inserimento dei parametri per l'inserimento di un veicolo");
+        ILLEGAL_ARGS("Errore nell'inserimento dei parametri del veicolo"),
+        PRIMARY_KEY("Errore:\n stai inserendo un veicolo con un numero di telaio già presente nel database");
         private String text;
         TYPE(String string) {
             text = string;

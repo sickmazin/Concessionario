@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.robot.Robot;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
+
+import java.time.LocalDate;
 import java.util.HashMap;
 
 public class ModificaController {
@@ -53,6 +55,8 @@ public class ModificaController {
         marcaT.setText(veicolo.getMarca());
         modelloT.setText(veicolo.getModello());
         tipologiaT.setText(veicolo.getTipologia());
+        if (veicolo.getDataSegnalazione()!=null)        data.setValue(LocalDate.parse(veicolo.getDataSegnalazione()));
+        posizioneCB.setValue(veicolo.getPosizione());
         marcaT.setText(veicolo.getMarca());
         carburanteT.setText(veicolo.getCarburante());
         descrizioneTA.setText(veicolo.getDescrizione());
@@ -85,9 +89,13 @@ public class ModificaController {
         if (labelSuTipologia!=null) modifiche.put(labelSuTipologia, ((TextField) vBoxAgg1.getChildren().get(1)).getText());
         modifiche.put("Posizione", posizioneCB.getValue());
         modifiche.put("Descrizione", descrizioneTA.getText());
+        modifiche.put("Tipologia",tipologiaT.getText());
         modifiche.put("Prezzo", prezzoTF.getText());
-        if (data !=null) modifiche.put("DataSegnalazione", data.getValue().toString());
+        if (data.getValue() !=null) {
+            modifiche.put("DataSegnalazione", data.getValue().toString());
+        }
         modifiche.put("StatoRiparazione", statoRipCB.getValue());
+        chiudi(event);
         database.updateUnitaVeicolo(modifiche);
     }
 

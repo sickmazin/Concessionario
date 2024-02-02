@@ -2,6 +2,7 @@ package com.project.concessionario;
 
 import com.project.concessionario.Prodotti.UnitaVeicolo;
 import com.project.concessionario.SQL.MyJDBC;
+import com.project.concessionario.SQL.PrimaryKeyException;
 import com.project.concessionario.sidebarState.HideState;
 import com.project.concessionario.sidebarState.TransitionState;
 import javafx.animation.TranslateTransition;
@@ -27,6 +28,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -55,6 +57,8 @@ public class VeicoloController implements Initializable {
     private ChoiceBox<String> possibilitaCB;
     @FXML
     private TextField prezzoTF;
+    @FXML
+    private ChoiceBox<String> statoRiparazioneCB;
     @FXML
     private ChoiceBox<String> sceltaFiltroCB;
     @FXML
@@ -178,13 +182,17 @@ public class VeicoloController implements Initializable {
 
     @FXML
     private void visualizza(MouseEvent event) {
+        clickedVisualizza();
+    }
+
+    private void clickedVisualizza() {
         unitaVeicoloObservableList.clear();
         colonnaDataSegnalazione.setVisible(false);
         colonnaStatoRiparazione.setVisible(false);
         colonnaDescrizioneDanni.setVisible(false);
         colonnaChilometraggio.setVisible  (false);
 
-        if (sceltaFiltroCB.getValue()==null ||sceltaFiltroCB.getValue().equals("Tutto")) unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
+        if (sceltaFiltroCB.getValue()==null || sceltaFiltroCB.getValue().equals("Tutto")) unitaVeicoloObservableList.addAll(database.getUnitaVeicolo("",""));
         else {
             if (sceltaFiltroCB.getValue().equals("Tipologia")){
                 if (possibilitaCB.getValue().equals("Usato")) {
@@ -223,12 +231,22 @@ public class VeicoloController implements Initializable {
             al.add(((ChoiceBox<String>) vBoxAgg3.getChildren().get(1)).getValue());
             database.insertUnitaVeicolo(nuovoVeicolo, tipologiaCB.getValue(), al);
 
+        }catch (PrimaryKeyException e) {
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.PRIMARY_KEY);
+            errorAlert.show();
+            return;
+        }catch (SQLIntegrityConstraintViolationException e){
+            errorAlert = new ErrorAlert(ErrorAlert.TYPE.FOREIGN_KEY);
+            errorAlert.show();
+            return;
         } catch(SQLException e) {
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.SQL_EXCEPTION);
             errorAlert.show();
+            return;
         } catch(IllegalArgumentException e) {
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.ILLEGAL_ARGS);
             errorAlert.show();
+            return;
         }
         visualizza(event);
     }
@@ -263,7 +281,7 @@ public class VeicoloController implements Initializable {
             popup.getContent().add(fxmlLoader.load());
             ModificaController mc = fxmlLoader.getController();
             mc.setDatabase(database);
-            mc.setVeicolo(al.get(0));
+            mc.setVeicolo(database.getUnitaVeicoloDaModificare(al.get(0)));
             popup.show(tableView.getScene().getWindow());
         } catch (IOException e) {
             errorAlert = new ErrorAlert(ErrorAlert.TYPE.FXML_ERROR);
@@ -330,6 +348,7 @@ public class VeicoloController implements Initializable {
             for (String posizione : database.getPOSIZIONI()) posizioneCB.getItems().add(posizione);
             for (String marca : database.getMARCA()) marcaCB.getItems().add(marca);
             for (String modello : database.getMODELLI()) modelloCB.getItems().add(modello);
+            for (String stato: database.getSTATO_RIPARAZIONE()) statoRiparazioneCB.getItems().add(stato);
         }
 
         sceltaFiltroCB.getItems().add("Tutto");
@@ -352,7 +371,7 @@ public class VeicoloController implements Initializable {
         colonnaStatoRiparazione.setCellValueFactory(new PropertyValueFactory<>("statoRiparazione"));
         colonnaDescrizioneDanni.setCellValueFactory(new PropertyValueFactory<>("descrizioneDanno"));
         tableView.setItems(unitaVeicoloObservableList);
-
+        clickedVisualizza();
     }
 
     @FXML
