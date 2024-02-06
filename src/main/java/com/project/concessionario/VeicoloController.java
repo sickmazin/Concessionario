@@ -371,7 +371,7 @@ public class VeicoloController implements Initializable {
         colonnaStatoRiparazione.setCellValueFactory(new PropertyValueFactory<>("statoRiparazione"));
         colonnaDescrizioneDanni.setCellValueFactory(new PropertyValueFactory<>("descrizioneDanno"));
         tableView.setItems(unitaVeicoloObservableList);
-        clickedVisualizza();
+        //clickedVisualizza();
     }
 
     @FXML
